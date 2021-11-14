@@ -9,5 +9,6 @@ public class Main {
         UserInterface ui = new UserInterface();
         ui.run();
         System.out.println("COMMIT");
+        System.out.println("commit nr 2 ");
     }
 }
