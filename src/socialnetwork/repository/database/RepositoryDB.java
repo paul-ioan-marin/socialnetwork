@@ -20,7 +20,8 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         this.username = username;
         this.password = password;
     }
-    public E findOne(String value, String sql) throws IdException, FileException {
+
+    protected E findOne(String value, String sql) throws IdException, FileException {
         if (value == null) throw new IdException("value must not be null");
         try {
             ResultSet resultSet = this.executeQuery(sql, new String[] {value});
@@ -33,7 +34,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return null;
     }
 
-    public Iterable<E> findAll(String sql) throws FileException {
+    protected Iterable<E> findAll(String sql) throws FileException {
         Set<E> entities = new HashSet<>();
         try {
             ResultSet resultSet = this.executeQuery(sql, new String[] {});
@@ -46,7 +47,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return entities;
     }
 
-    public E save(E entity, String sql, String[] attributes) throws IdException, FileException {
+    protected E save(E entity, String sql, String[] attributes) throws IdException, FileException {
         if (entity == null) throw new IdException("entity must not be null");
         if(this.contains(entity)) return null;
         validator.validate(entity);
@@ -54,7 +55,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return entity;
     }
 
-    public E delete(UUID uuid, String sql, String[] attributes) throws IdException, FileException {
+    protected E delete(UUID uuid, String sql, String[] attributes) throws IdException, FileException {
         if (uuid == null) throw new IdException("id must not be null");
         E entity = findOne(uuid);
         if (entity == null) return null;
@@ -62,7 +63,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return entity;
     }
 
-    public E update(E entity, String sql, String[] attributes) throws IdException, FileException {
+    protected E update(E entity, String sql, String[] attributes) throws IdException, FileException {
         if (entity == null) throw new IdException("entity must not be null");
         if (findOne(entity.getId()) == null) return null;
         validator.validate(entity);
@@ -90,12 +91,12 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return this.execute(sql, attributes).executeQuery();
     }
 
-    public void modifyDB(String sql, String[] attributes) throws FileException {
+    private void modifyDB(String sql, String[] attributes) throws FileException {
         try { this.execute(sql, attributes).executeUpdate(); }
         catch (SQLException e) { throw new FileException("corrupted file"); }
     }
 
-    public static Map<String, String> getStringDB(ResultSet resultSet, String[] columnsArray) throws FileException {
+    protected static Map<String, String> getStringDB(ResultSet resultSet, String[] columnsArray) throws FileException {
         Map<String, String> result = new HashMap<>();
         try {
             for (String column : columnsArray)

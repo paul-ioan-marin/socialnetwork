@@ -10,7 +10,7 @@ import socialnetwork.service.Service;
 import java.util.List;
 import java.util.Scanner;
 
-import static socialnetwork.domain.constants.PersonalConstants.*;
+import static socialnetwork.domain.constantsgit.PersonalConstants.*;
 
 public class UserInterface {
     private Service service;
