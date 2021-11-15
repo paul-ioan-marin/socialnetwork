@@ -1,10 +1,13 @@
 package socialnetwork.service;
 
 import socialnetwork.domain.Friendship;
+import socialnetwork.domain.FriendshipWithStatus;
 import socialnetwork.domain.User;
 import socialnetwork.domain.exceptions.FileException;
 import socialnetwork.domain.exceptions.RepositoryException;
 import socialnetwork.repository.database.FriendshipRepositoryDB;
+import socialnetwork.repository.database.FriendshipStatusRepositoryDB;
+import socialnetwork.repository.database.SuperFriendshipRepositoryDB;
 import socialnetwork.repository.database.UserRepositoryDB;
 
 import java.util.ArrayList;
@@ -12,18 +15,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Service {
-    private final FriendshipRepositoryDB friendships;
+    private final FriendshipStatusRepositoryDB friendships;
     private final UserRepositoryDB users;
 
     public Service(String url, String username, String password) throws FileException {
-        this.friendships = new FriendshipRepositoryDB(url, username, password);
+        this.friendships = new FriendshipStatusRepositoryDB(url, username, password);
         users = this.friendships.getUsers();
     }
 
     /**
      * @return the friendships in the network.
      */
-    public Iterable<Friendship> getFriendships() throws FileException {
+    public Iterable<FriendshipWithStatus> getFriendships() throws FileException {
         return this.friendships.findAll();
     }
 
@@ -43,6 +46,10 @@ public class Service {
         //}
         //return users;
         return users.findAll();
+    }
+
+    public User findUserByEmail(String email) throws FileException {
+        return users.findByEmail(email);
     }
 
     /**
@@ -108,7 +115,7 @@ public class Service {
             throw new RepositoryException("none of the users has one of the emails");
         if (users.findByEmail(email2) == null)
             throw new RepositoryException("none of the users has one of the emails");
-        Friendship friendship = friendships.save(new Friendship(users.findByEmail(email1), users.findByEmail(email2)));
+        Friendship friendship = friendships.save(new FriendshipWithStatus(users.findByEmail(email1), users.findByEmail(email2)));
         if (friendship == null) throw new RepositoryException("the friendship already exists");
     }
 
@@ -122,8 +129,8 @@ public class Service {
     public void deleteFriendship(String email1, String email2) throws FileException, RepositoryException {
         if (users.findByEmail(email1) == null || users.findByEmail(email2) == null)
             throw new RepositoryException("none of the users has one of the emails");
-        Friendship friendship = new Friendship(users.findByEmail(email1), users.findByEmail(email2));
-        for (Friendship i : friendships.findAll())
+        FriendshipWithStatus friendship = new FriendshipWithStatus(users.findByEmail(email1), users.findByEmail(email2));
+        for (FriendshipWithStatus i : friendships.findAll())
             if (i.equals(friendship)) {
                 friendships.delete(i.getId());
                 return;
@@ -144,8 +151,8 @@ public class Service {
             throw new RepositoryException("none of the users has one of the emails");
         if (users.findByEmail(email2) == null)
             throw new RepositoryException("none of the users has one of the emails");
-        Friendship friendship = new Friendship(users.findByEmail(email1), users.findByEmail(email2));
-        for (Friendship i : friendships.findAll())
+        FriendshipWithStatus friendship = new FriendshipWithStatus(users.findByEmail(email1), users.findByEmail(email2));
+        for (FriendshipWithStatus i : friendships.findAll())
             if (i.equals(friendship)) {
                 friendship.setId(i.getId());
             }

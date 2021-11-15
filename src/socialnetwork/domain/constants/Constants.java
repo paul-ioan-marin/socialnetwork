@@ -15,4 +15,20 @@ public class Constants {
     public static final String LNAME = "last_name";
     public static final String FRIEND1 = "friend_1";
     public static final String FRIEND2 = "friend_2";
+    public static final String STATUS = "status";
+
+    public enum Status {
+        ACCEPTED("accepted"), PENDING("pending"), DECLINED("declined");
+        private final String text;
+        Status(String status) { text = status; }
+        public String getValue() { return text; }
+        public static Status fromString(String text) {
+            return switch (text) {
+                case "accepted" -> Status.ACCEPTED;
+                case "pending" -> Status.PENDING;
+                case "declined" -> Status.DECLINED;
+                default -> throw new IllegalArgumentException("invalid status");
+            };
+        }
+    }
 }
