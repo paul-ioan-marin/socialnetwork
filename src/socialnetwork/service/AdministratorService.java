@@ -1,6 +1,5 @@
 package socialnetwork.service;
 
-import socialnetwork.domain.Friendship;
 import socialnetwork.domain.FriendshipWithStatus;
 import socialnetwork.domain.User;
 import socialnetwork.domain.constants.Constants;
@@ -26,11 +25,11 @@ public class AdministratorService extends AbstractService {
         User user = users.findByEmail(email);
         if (user == null)
             throw new RepositoryException("the email does not exits");
-        ArrayList<Friendship> toDel = new ArrayList<>();
-        for (Friendship friendship : friendships.findAll())
+        ArrayList<FriendshipWithStatus> toDel = new ArrayList<>();
+        for (FriendshipWithStatus friendship : friendships.findAll())
             if (friendship.isFriend(user))
                 toDel.add(friendship);
-        for(Friendship friendship : toDel)
+        for(FriendshipWithStatus friendship : toDel)
             friendships.delete(friendship.getId());
         user = users.delete(user.getId());
         if (user == null) throw new RepositoryException("the email does not exist");
@@ -53,7 +52,7 @@ public class AdministratorService extends AbstractService {
             throw new RepositoryException("none of the users has one of the emails");
         if (users.findByEmail(email2) == null)
             throw new RepositoryException("none of the users has one of the emails");
-        Friendship friendship = friendships.save(new FriendshipWithStatus(users.findByEmail(email1),
+        FriendshipWithStatus friendship = friendships.save(new FriendshipWithStatus(users.findByEmail(email1),
                 users.findByEmail(email2), Constants.Status.ACCEPTED, LocalDateTime.now()));
         if (friendship == null) throw new RepositoryException("the friendship already exists");
     }

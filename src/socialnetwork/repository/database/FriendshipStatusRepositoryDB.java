@@ -51,6 +51,10 @@ public class FriendshipStatusRepositoryDB extends SuperFriendshipRepositoryDB<Fr
         return update(friendship);
     }
 
+    public FriendshipWithStatus request(FriendshipWithStatus friendship) throws FileException {
+        return save(friendship);
+    }
+
     public FriendshipWithStatus decline(FriendshipWithStatus friendship) throws FileException {
         return delete(friendship.getId());
     }

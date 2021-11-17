@@ -13,6 +13,7 @@ public class FriendshipWithStatus extends Friendship {
     public FriendshipWithStatus(User user1, User user2) {
         super(user1, user2);
         this.status = Status.PENDING;
+        this.date = LocalDateTime.now();
     }
 
     public FriendshipWithStatus(User user1, User user2, Status status, LocalDateTime date) {

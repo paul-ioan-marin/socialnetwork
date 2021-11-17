@@ -109,4 +109,8 @@ public class AbstractService {
     public void updateFriendship(String email1, String email2, String email3, String email4) throws FileException, RepositoryException, AccessException {
         throw new AccessException("inaccessible method");
     }
+
+    public void sendRequest(String email) throws FileException, RepositoryException, AccessException {
+        throw new AccessException("inaccessible method");
+    }
 }

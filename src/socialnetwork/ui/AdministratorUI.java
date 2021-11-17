@@ -90,7 +90,7 @@ throw e;
      */
     private void deleteUser() throws FileException, RepositoryException, AccessException {
         System.out.println("Introduce email: ");
-        String attribute =(new Scanner(System.in)).nextLine();
+        String attribute = (new Scanner(System.in)).nextLine();
         service.deleteUser(attribute);
         System.out.println("User deleted");
     }
