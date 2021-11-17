@@ -7,10 +7,10 @@ import socialnetwork.domain.validator.FriendshipValidator;
 
 import java.util.UUID;
 
-public abstract class SuperFriendshipRepositoryDB<E extends Friendship> extends RepositoryDB<E> {
+public abstract class AbstractFriendshipRepositoryDB<E extends Friendship> extends RepositoryDB<E> {
     protected final UserRepositoryDB users;
 
-    public SuperFriendshipRepositoryDB(String url, String username, String password) {
+    public AbstractFriendshipRepositoryDB(String url, String username, String password) {
         super(url, username, password);
         this.validator = new FriendshipValidator<>();
         users = new UserRepositoryDB(url, username, password);

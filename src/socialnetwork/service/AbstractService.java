@@ -1,8 +1,8 @@
 package socialnetwork.service;
 
-import socialnetwork.domain.Friendship;
 import socialnetwork.domain.FriendshipWithStatus;
 import socialnetwork.domain.User;
+import socialnetwork.domain.containers.FriendshipList;
 import socialnetwork.domain.exceptions.AccessException;
 import socialnetwork.domain.exceptions.FileException;
 import socialnetwork.domain.exceptions.RepositoryException;
@@ -107,6 +107,10 @@ public class AbstractService {
      * @throws RepositoryException if the friendship does not exist.
      */
     public void updateFriendship(String email1, String email2, String email3, String email4) throws FileException, RepositoryException, AccessException {
+        throw new AccessException("inaccessible method");
+    }
+
+    public FriendshipList acceptedFriendships() throws FileException, AccessException {
         throw new AccessException("inaccessible method");
     }
 }

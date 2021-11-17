@@ -5,6 +5,7 @@ import socialnetwork.domain.constants.Constants.Status;
 import java.time.LocalDateTime;
 
 import static socialnetwork.domain.constants.Constants.DATEFORMATTER;
+import static socialnetwork.domain.constants.Constants.NULLDATE;
 
 public class FriendshipWithStatus extends Friendship {
     private LocalDateTime date;
@@ -13,6 +14,7 @@ public class FriendshipWithStatus extends Friendship {
     public FriendshipWithStatus(User user1, User user2) {
         super(user1, user2);
         this.status = Status.PENDING;
+        this.date = LocalDateTime.now();
     }
 
     public FriendshipWithStatus(User user1, User user2, Status status, LocalDateTime date) {

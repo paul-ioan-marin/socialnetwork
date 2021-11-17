@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.util.Map;
 import java.util.UUID;
 
-public class FriendshipRepositoryDB extends SuperFriendshipRepositoryDB<Friendship> {
+public class FriendshipRepositoryDB extends AbstractFriendshipRepositoryDB<Friendship> {
     public FriendshipRepositoryDB(String url, String username, String password) {
         super(url, username, password);
     }
