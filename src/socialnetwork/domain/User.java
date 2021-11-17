@@ -79,7 +79,6 @@ public class User extends Entity<UUID> {
                 "email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", friends=" + friends +
                 '}';
     }
 

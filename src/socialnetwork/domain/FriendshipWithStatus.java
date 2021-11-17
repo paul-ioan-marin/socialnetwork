@@ -2,10 +2,12 @@ package socialnetwork.domain;
 
 import socialnetwork.domain.constants.Constants.Status;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import static socialnetwork.domain.constants.Constants.DATEFORMATTER;
 
 public class FriendshipWithStatus extends Friendship {
-    private LocalDate date;
+    private LocalDateTime date;
     private Status status;
 
     public FriendshipWithStatus(User user1, User user2) {
@@ -13,32 +15,31 @@ public class FriendshipWithStatus extends Friendship {
         this.status = Status.PENDING;
     }
 
-    public FriendshipWithStatus(User user1, User user2, Status status) {
+    public FriendshipWithStatus(User user1, User user2, Status status, LocalDateTime date) {
         super(user1, user2);
         this.status = status;
+        this.date = date;
     }
 
-    public LocalDate getDate() { return date; }
+    public LocalDateTime getDate() { return date; }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
     public Status status() { return status; }
 
-    public String accept() {
+    public void accept() {
         this.status = Status.ACCEPTED;
-        this.date = LocalDate.now();
-        return this.status.getValue();
+        this.date = LocalDateTime.now();
     }
 
-    public String decline() {
+    public void decline() {
         this.status = Status.DECLINED;
-        return this.status.getValue();
     }
 
     @Override
     public String toString() {
-        return "Friendship: " + getLeft().getEmail() + " , " + getRight().getEmail() + " , " + status().getValue();
+        return super.toString() + " , " + status.getValue() + " , " + date.format(DATEFORMATTER);
     }
 }

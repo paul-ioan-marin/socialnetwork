@@ -6,6 +6,8 @@ import socialnetwork.domain.User;
 import socialnetwork.domain.exceptions.FileException;
 
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
@@ -18,9 +20,9 @@ public class FriendshipStatusRepositoryDB extends SuperFriendshipRepositoryDB<Fr
 
     @Override
     public FriendshipWithStatus save(FriendshipWithStatus friendship) throws FileException {
-        String sql = "insert into friendships (id, friend_1, friend_2) values (?, ?, ?, ?)";
-        String[] attributes = new String[] {friendship.getId().toString(),
-                friendship.getLeft().getId().toString(), friendship.getRight().getId().toString(), friendship.status().getValue()};
+        String sql = "insert into friendships (id, friend_1, friend_2, status, date) values (?, ?, ?, ?, ?)";
+        String[] attributes = new String[] {friendship.getId().toString(), friendship.getLeft().getId().toString(),
+                friendship.getRight().getId().toString(), friendship.status().getValue(), friendship.getDate().format(DATEFORMATTER)};
         return super.save(friendship, sql, attributes);
     }
 
@@ -34,11 +36,12 @@ public class FriendshipStatusRepositoryDB extends SuperFriendshipRepositoryDB<Fr
 
     @Override
     protected FriendshipWithStatus getFromDB(ResultSet resultSet) throws FileException {
-        Map<String, String> fromDB = RepositoryDB.getStringDB(resultSet, new String[]{ID, FRIEND1, FRIEND2, STATUS});
+        Map<String, String> fromDB = RepositoryDB.getStringDB(resultSet, new String[]{ID, FRIEND1, FRIEND2, STATUS, FRIENDDATE});
         User user1 = users.findOne(UUID.fromString(fromDB.get(FRIEND1)));
         User user2 = users.findOne(UUID.fromString(fromDB.get(FRIEND2)));
         Status status = Status.fromString(fromDB.get(STATUS));
-        FriendshipWithStatus result = new FriendshipWithStatus(user1, user2, status);
+        LocalDateTime friendDate = LocalDateTime.parse(fromDB.get(FRIENDDATE),DATEFORMATTER);
+        FriendshipWithStatus result = new FriendshipWithStatus(user1, user2, status, friendDate);
         result.setId(UUID.fromString(fromDB.get(ID)));
         return result;
     }

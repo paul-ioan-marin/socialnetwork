@@ -1,10 +1,16 @@
 package socialnetwork.ui;
 
+import socialnetwork.domain.User;
 import socialnetwork.domain.exceptions.InputException;
+import socialnetwork.service.UserService;
 
 import java.util.Scanner;
 
 public class UserUI extends AbstractUI {
+    public UserUI(AbstractUI ui, User user) {
+        this.service = new UserService(ui.service, user);
+    }
+
     @Override
     public void run() {
         try {
