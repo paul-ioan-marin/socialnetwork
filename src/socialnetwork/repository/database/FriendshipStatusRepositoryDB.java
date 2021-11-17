@@ -1,19 +1,17 @@
 package socialnetwork.repository.database;
 
-import socialnetwork.domain.Friendship;
 import socialnetwork.domain.FriendshipWithStatus;
 import socialnetwork.domain.User;
 import socialnetwork.domain.exceptions.FileException;
 
 import java.sql.ResultSet;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
 import static socialnetwork.domain.constants.Constants.*;
 
-public class FriendshipStatusRepositoryDB extends SuperFriendshipRepositoryDB<FriendshipWithStatus> {
+public class FriendshipStatusRepositoryDB extends AbstractFriendshipRepositoryDB<FriendshipWithStatus> {
     public FriendshipStatusRepositoryDB(String url, String username, String password) {
         super(url, username, password);
     }

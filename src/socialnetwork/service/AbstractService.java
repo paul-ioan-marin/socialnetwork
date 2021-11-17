@@ -1,8 +1,8 @@
 package socialnetwork.service;
 
-import socialnetwork.domain.Friendship;
 import socialnetwork.domain.FriendshipWithStatus;
 import socialnetwork.domain.User;
+import socialnetwork.domain.containers.FriendshipList;
 import socialnetwork.domain.exceptions.AccessException;
 import socialnetwork.domain.exceptions.FileException;
 import socialnetwork.domain.exceptions.RepositoryException;
@@ -111,6 +111,9 @@ public class AbstractService {
     }
 
     public void sendRequest(String email) throws FileException, RepositoryException, AccessException {
+        throw new AccessException("inaccessible method");
+    }
+    public FriendshipList acceptedFriendships() throws FileException, AccessException {
         throw new AccessException("inaccessible method");
     }
 }

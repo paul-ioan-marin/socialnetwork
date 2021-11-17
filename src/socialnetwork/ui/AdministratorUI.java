@@ -166,5 +166,4 @@ throw e;
         for (Friendship friendship : service.getFriendships())
             System.out.println(friendship.toString());
     }
-
 }
