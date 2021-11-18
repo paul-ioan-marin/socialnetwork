@@ -82,7 +82,7 @@ public class AbstractService {
     }
 
     /**
-     * Makes a string that contains the people with that particular email and mont
+     * Makes a string that contains the people with that particular email and month
      * @param user the user that we are looking for
      * @param month the month in which he made friends
      * @return a string with the name and date
@@ -94,7 +94,8 @@ public class AbstractService {
                 .filter(friends -> friends.getDate().getMonthValue() == month)
                 .map( friends -> friends.getRight().getFullName()+" | "+friends.getLeft().getFullName()+"" +
                         " | "+friends.getDate().toString() )
-                .collect( Collectors.joining( "\n" ));
+                .collect( Collectors.joining( "\n" ))
+                .replace("T", " ");
         return sameMonthFriends;
     }
 

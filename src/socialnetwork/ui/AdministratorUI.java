@@ -35,6 +35,9 @@ public class AdministratorUI extends AbstractUI {
                         case "5": deleteFriendship(); break;
                         case "6": updateFriendship(); break;
                         case "7": showEverything(); break;
+                        case "8": showFriendshipByMonth(); break;
+                        case "9": showSameFirstName(); break;
+                        case "10": showSameLastName(); break;
                         default: throw new InputException("Invalid input");
                     }
                 } catch (Exception e) {
@@ -63,6 +66,9 @@ throw e;
         System.out.println("5 - Delete friendship");
         System.out.println("6 - Update friendship");
         System.out.println("7 - Show everything");
+        System.out.println("8 - Show filtered friends by month");
+        System.out.println("9 - Show users with the same first name");
+        System.out.println("10 - Show users with the same last name");
         System.out.println("0 - Exit");
         System.out.println("Introduce one of the numbers: ");
         return (new Scanner(System.in)).nextLine();
@@ -165,5 +171,28 @@ throw e;
         System.out.println("\nFriendships:");
         for (Friendship friendship : service.getFriendships())
             System.out.println(friendship.toString());
+    }
+
+    private void showFriendshipByMonth() throws FileException,InputException{
+        System.out.println("Introduce email and month(in number format please) separated by space: ");
+        List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
+        if (attributes.size() != 2)
+            throw new InputException("Wrong inputs");
+        String fin = service.getFriendshipByMonth(service.findUserByEmail(attributes.get(0)),Integer.parseInt(attributes.get(1)));
+        System.out.println(fin);
+    }
+
+    private void showSameFirstName() throws FileException,InputException{
+        System.out.println("Introduce the first name : ");
+        String first_name = new Scanner(System.in).nextLine();
+        List<User> fin = service.findUsersByFirstName(first_name);
+        fin.stream().forEach(user -> System.out.println(user.toString()));
+    }
+
+    private void showSameLastName() throws FileException,InputException{
+        System.out.println("Introduce the last name : ");
+        String last_name = new Scanner(System.in).nextLine();
+        List<User> fin = service.findUsersByLastName(last_name);
+        fin.stream().forEach(user -> System.out.println(user.toString()));
     }
 }
