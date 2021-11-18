@@ -27,9 +27,8 @@ public class UserService extends AbstractService {
     }
 
     public FriendshipList acceptedFriendships() throws FileException {
-        return StreamSupport.stream(this.getFriendships().spliterator(), false)
+        return StreamSupport.stream(this.friendships.findByFriend(this.user.getId()).spliterator(), false)
                 .filter(friendship -> friendship.status() == Constants.Status.ACCEPTED)
-                .filter(friendship -> friendship.isFriend(this.user))
                 .collect(Collectors.toCollection(FriendshipList::new));
     }
 }

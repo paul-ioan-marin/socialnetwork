@@ -21,7 +21,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         this.password = password;
     }
 
-    protected E findOne(String value, String sql) throws IdException, FileException {
+    protected E findOne(String sql, String value) throws IdException, FileException {
         if (value == null) throw new IdException("value must not be null");
         try {
             ResultSet resultSet = this.executeQuery(sql, new String[] {value});
@@ -34,10 +34,10 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return null;
     }
 
-    protected Iterable<E> findAll(String sql) throws FileException {
+    protected Iterable<E> findAll(String sql, String[] attributes) throws FileException {
         Set<E> entities = new HashSet<>();
         try {
-            ResultSet resultSet = this.executeQuery(sql, new String[] {});
+            ResultSet resultSet = this.executeQuery(sql, attributes);
             while (resultSet.next()) {
                 E entity = getFromDB(resultSet);
                 validator.validate(entity);
