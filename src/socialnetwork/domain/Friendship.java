@@ -32,6 +32,19 @@ public class Friendship extends Pair<User, User> {
         return ((getLeft().equals(user)) || (getRight().equals(user)));
     }
 
+    /**
+     * Return the friend of an user in a friendship;
+     * @param user the user
+     * @return the other friend; null if the given user is not in friendship.
+     */
+    public User theOtherFriend(User user) {
+        if (getLeft().equals(user))
+            return getRight();
+        if (getRight().equals(user))
+            return getLeft();
+        return null;
+    }
+
     @Override
     public String toString() {
         return "Friendship: " + getLeft().getEmail() + " , " + getRight().getEmail();

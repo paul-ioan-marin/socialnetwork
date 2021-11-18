@@ -20,18 +20,18 @@ public class UserRepositoryDB extends RepositoryDB<User> {
     @Override
     public User findOne(UUID uuid) throws IdException, FileException {
         String sql = "select * from users where id = ?";
-        return super.findOne(uuid.toString(), sql);
+        return super.findOne(sql, uuid.toString());
     }
 
     public User findByEmail(String email) throws IdException, FileException {
         String sql = "select * from users where email = ?";
-        return super.findOne(email, sql);
+        return super.findOne(sql, email);
     }
 
     @Override
     public Iterable<User> findAll() throws IdException, FileException {
         String sql = "select * from users";
-        return super.findAll(sql);
+        return super.findAll(sql, new String[]{});
     }
 
     @Override

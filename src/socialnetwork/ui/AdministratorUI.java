@@ -2,20 +2,25 @@ package socialnetwork.ui;
 
 import socialnetwork.domain.Friendship;
 import socialnetwork.domain.User;
+import socialnetwork.domain.exceptions.AccessException;
 import socialnetwork.domain.exceptions.FileException;
 import socialnetwork.domain.exceptions.InputException;
 import socialnetwork.domain.exceptions.RepositoryException;
+import socialnetwork.service.AdministratorService;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class AdministratorUI extends AbstractUI {
+    public AdministratorUI(AbstractUI ui) {
+        this.service = new AdministratorService(ui.service);
+    }
 
     /**
      * Runs the menu loop;
      */
     @Override
-    public void run() {
+    public void run() throws Exception {
         try {
             String input = "";
             do {
@@ -33,12 +38,14 @@ public class AdministratorUI extends AbstractUI {
                         default: throw new InputException("Invalid input");
                     }
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+//                    System.out.println(e.getMessage());
+throw e;
                 }
                 System.out.println("\n");
             } while (!input.equals("0"));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
+throw e;
         }
         System.out.println("Goodbye");
     }
@@ -67,7 +74,7 @@ public class AdministratorUI extends AbstractUI {
      * @throws FileException if file is invalid;
      * @throws RepositoryException if user exists.
      */
-    private void addUser() throws InputException, FileException, RepositoryException {
+    private void addUser() throws InputException, FileException, RepositoryException, AccessException {
         System.out.println("Introduce email, first name and second name, separated by space: ");
         List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
         if (attributes.size() != 3)
@@ -81,9 +88,9 @@ public class AdministratorUI extends AbstractUI {
      * @throws FileException if file is invalid;
      * @throws RepositoryException if user does not exist.
      */
-    private void deleteUser() throws FileException, RepositoryException {
+    private void deleteUser() throws FileException, RepositoryException, AccessException {
         System.out.println("Introduce email: ");
-        String attribute =(new Scanner(System.in)).nextLine();
+        String attribute = (new Scanner(System.in)).nextLine();
         service.deleteUser(attribute);
         System.out.println("User deleted");
     }
@@ -94,7 +101,7 @@ public class AdministratorUI extends AbstractUI {
      * @throws FileException if file is invalid;
      * @throws RepositoryException if user does not exist.
      */
-    private void updateUser() throws InputException, FileException, RepositoryException {
+    private void updateUser() throws InputException, FileException, RepositoryException, AccessException {
         System.out.println("Introduce email, first name and second name, separated by space: ");
         List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
         if (attributes.size() != 3)
@@ -109,7 +116,7 @@ public class AdministratorUI extends AbstractUI {
      * @throws FileException if file is invalid;
      * @throws RepositoryException if friendship exists.
      */
-    private void addFriendship() throws InputException, FileException, RepositoryException {
+    private void addFriendship() throws InputException, FileException, RepositoryException, AccessException {
         System.out.println("Introduce first and second email, separated by space: ");
         List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
         if (attributes.size() != 2)
@@ -124,7 +131,7 @@ public class AdministratorUI extends AbstractUI {
      * @throws FileException if file is invalid;
      * @throws RepositoryException if friendship does not exits.
      */
-    private void deleteFriendship() throws InputException, FileException, RepositoryException {
+    private void deleteFriendship() throws InputException, FileException, RepositoryException, AccessException {
         System.out.println("Introduce first and second email, separated by space: ");
         List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
         if (attributes.size() != 2)
@@ -139,7 +146,7 @@ public class AdministratorUI extends AbstractUI {
      * @throws FileException if file is invalid;
      * @throws RepositoryException if friendship does not exits.
      */
-    private void updateFriendship() throws InputException, FileException, RepositoryException {
+    private void updateFriendship() throws InputException, FileException, RepositoryException, AccessException {
         System.out.println("Introduce first, second, third and fourth email, separated by space: ");
         List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
         if (attributes.size() != 4)
@@ -159,5 +166,4 @@ public class AdministratorUI extends AbstractUI {
         for (Friendship friendship : service.getFriendships())
             System.out.println(friendship.toString());
     }
-
 }

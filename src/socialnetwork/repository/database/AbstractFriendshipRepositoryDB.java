@@ -7,10 +7,10 @@ import socialnetwork.domain.validator.FriendshipValidator;
 
 import java.util.UUID;
 
-public abstract class SuperFriendshipRepositoryDB<E extends Friendship> extends RepositoryDB<E> {
+public abstract class AbstractFriendshipRepositoryDB<E extends Friendship> extends RepositoryDB<E> {
     protected final UserRepositoryDB users;
 
-    public SuperFriendshipRepositoryDB(String url, String username, String password) {
+    public AbstractFriendshipRepositoryDB(String url, String username, String password) {
         super(url, username, password);
         this.validator = new FriendshipValidator<>();
         users = new UserRepositoryDB(url, username, password);
@@ -19,13 +19,18 @@ public abstract class SuperFriendshipRepositoryDB<E extends Friendship> extends 
     @Override
     public E findOne(UUID uuid) throws IdException, FileException {
         String sql = "select * from friendships where id = ?";
-        return super.findOne(uuid.toString(), sql);
+        return super.findOne(sql, uuid.toString());
+    }
+
+    public Iterable<E> findByFriend(UUID id) throws FileException {
+        String sql = "select * from friendships where friend_1 = ? or friend_2 = ?";
+        return super.findAll(sql, new String[]{id.toString(), id.toString()});
     }
 
     @Override
     public Iterable<E> findAll() throws IdException, FileException {
-        String sql = "SELECT * from friendships";
-        return super.findAll(sql);
+        String sql = "select * from friendships";
+        return super.findAll(sql, new String[]{});
     }
 
     public UserRepositoryDB getUsers() throws IdException, FileException {
