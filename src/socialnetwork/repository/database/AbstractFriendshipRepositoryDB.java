@@ -38,20 +38,20 @@ public abstract class AbstractFriendshipRepositoryDB<E extends Friendship> exten
     }
 
     @Override
-    protected E save(E friendship, String sql, String[] attributes) throws IdException, FileException {
+    protected E save(E friendship, String sql, String[] attributes) throws IdException, FileException, Exception {
         if (!users.contains(friendship.getLeft()) || !users.contains(friendship.getRight())) return null;
         return super.save(friendship, sql, attributes);
     }
 
     @Override
-    public E delete(UUID uuid) throws FileException {
+    public E delete(UUID uuid) throws FileException, Exception {
         String sql = "delete from friendships where id = ?";
         String[] attributes = new String[] {uuid.toString()};
         return super.delete(uuid, sql, attributes);
     }
 
     @Override
-    public E update(E friendship, String sql, String[] attributes) throws IdException, FileException {
+    public E update(E friendship, String sql, String[] attributes) throws IdException, FileException, Exception {
         if (!users.contains(friendship.getLeft()) || !users.contains(friendship.getRight())) return null;
         return super.update(friendship, sql, attributes);
     }

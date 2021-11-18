@@ -47,7 +47,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return entities;
     }
 
-    protected E save(E entity, String sql, String[] attributes) throws IdException, FileException {
+    protected E save(E entity, String sql, String[] attributes) throws IdException, FileException, Exception {
         if (entity == null) throw new IdException("entity must not be null");
         if(this.contains(entity)) return null;
         validator.validate(entity);
@@ -55,7 +55,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return entity;
     }
 
-    protected E delete(UUID uuid, String sql, String[] attributes) throws IdException, FileException {
+    protected E delete(UUID uuid, String sql, String[] attributes) throws IdException, FileException, Exception {
         if (uuid == null) throw new IdException("id must not be null");
         E entity = findOne(uuid);
         if (entity == null) return null;
@@ -63,7 +63,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return entity;
     }
 
-    protected E update(E entity, String sql, String[] attributes) throws IdException, FileException {
+    protected E update(E entity, String sql, String[] attributes) throws IdException, FileException, Exception {
         if (entity == null) throw new IdException("entity must not be null");
         if (findOne(entity.getId()) == null) return null;
         validator.validate(entity);
@@ -91,9 +91,12 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return this.execute(sql, attributes).executeQuery();
     }
 
-    private void modifyDB(String sql, String[] attributes) throws FileException {
+    private void modifyDB(String sql, String[] attributes) throws Exception, FileException {
         try { this.execute(sql, attributes).executeUpdate(); }
-        catch (SQLException e) { throw new FileException("corrupted file"); }
+        catch (SQLException e) {
+//            throw new FileException("corrupted file");
+throw e;
+        }
     }
 
     protected static Map<String, String> getStringDB(ResultSet resultSet, String[] columnsArray) throws FileException {

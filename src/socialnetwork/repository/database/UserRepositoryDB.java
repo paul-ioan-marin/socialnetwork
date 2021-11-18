@@ -35,7 +35,7 @@ public class UserRepositoryDB extends RepositoryDB<User> {
     }
 
     @Override
-    public User save(User user) throws IdException, FileException {
+    public User save(User user) throws IdException, FileException, Exception {
         String sql = "insert into users (id, email, first_name, last_name) values (?, ?, ?, ?)";
         String[] attributes = new String[] {user.getId().toString(), user.getEmail(),
                 user.getFirstName(), user.getLastName()};
@@ -43,14 +43,14 @@ public class UserRepositoryDB extends RepositoryDB<User> {
     }
 
     @Override
-    public User delete(UUID uuid) throws IdException, FileException {
+    public User delete(UUID uuid) throws IdException, FileException, Exception {
         String sql = "delete from users where id = ?";
         String[] attributes = new String[] {uuid.toString()};
         return super.delete(uuid, sql, attributes);
     }
 
     @Override
-    public User update(User user) throws IdException, FileException {
+    public User update(User user) throws IdException, FileException, Exception {
         String sql = "update users set email = ?, first_name = ?, last_name = ? where id = ?";
         String[] attributes = new String[] {user.getEmail(), user.getFirstName(),
                 user.getLastName(), user.getId().toString()};

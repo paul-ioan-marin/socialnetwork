@@ -17,7 +17,7 @@ public class FriendshipStatusRepositoryDB extends AbstractFriendshipRepositoryDB
     }
 
     @Override
-    public FriendshipWithStatus save(FriendshipWithStatus friendship) throws FileException {
+    public FriendshipWithStatus save(FriendshipWithStatus friendship) throws FileException, Exception {
         String sql = "insert into friendships (id, friend_1, friend_2, status, date) values (?, ?, ?, ?, ?)";
         String[] attributes = new String[] {friendship.getId().toString(), friendship.getLeft().getId().toString(),
                 friendship.getRight().getId().toString(), friendship.status().getValue(), friendship.getDate().format(DATEFORMATTER)};
@@ -25,10 +25,10 @@ public class FriendshipStatusRepositoryDB extends AbstractFriendshipRepositoryDB
     }
 
     @Override
-    public FriendshipWithStatus update(FriendshipWithStatus friendship) throws FileException {
-        String sql = "update friendships set friend_1 = ?, friend_2 = ?, status = ? where id = ?";
+    public FriendshipWithStatus update(FriendshipWithStatus friendship) throws FileException, Exception {
+        String sql = "update friendships set friend_1 = ?, friend_2 = ?, status = ?, date = ? where id = ?";
         String[] attributes = new String[] {friendship.getLeft().getId().toString(), friendship.getRight().getId().toString(),
-                friendship.status().getValue(), friendship.getId().toString()};
+                friendship.status().getValue(), friendship.getDate().format(DATEFORMATTER), friendship.getId().toString()};
         return super.update(friendship, sql, attributes);
     }
 
@@ -44,16 +44,16 @@ public class FriendshipStatusRepositoryDB extends AbstractFriendshipRepositoryDB
         return result;
     }
 
-    public FriendshipWithStatus accept(FriendshipWithStatus friendship) throws FileException {
+    public FriendshipWithStatus accept(FriendshipWithStatus friendship) throws FileException, Exception {
         friendship.accept();
         return update(friendship);
     }
 
-    public FriendshipWithStatus request(FriendshipWithStatus friendship) throws FileException {
+    public FriendshipWithStatus request(FriendshipWithStatus friendship) throws FileException, Exception {
         return save(friendship);
     }
 
-    public FriendshipWithStatus decline(FriendshipWithStatus friendship) throws FileException {
+    public FriendshipWithStatus decline(FriendshipWithStatus friendship) throws FileException, Exception {
         return delete(friendship.getId());
     }
 }

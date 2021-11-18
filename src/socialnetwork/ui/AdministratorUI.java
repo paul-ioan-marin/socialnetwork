@@ -64,7 +64,7 @@ throw e;
         System.out.println("6 - Update friendship");
         System.out.println("7 - Show everything");
         System.out.println("0 - Exit");
-        System.out.println("Introduce one of the numbers: ");
+        System.out.println("Introduce one of the numbers:");
         return (new Scanner(System.in)).nextLine();
     }
 
@@ -74,11 +74,11 @@ throw e;
      * @throws FileException if file is invalid;
      * @throws RepositoryException if user exists.
      */
-    private void addUser() throws InputException, FileException, RepositoryException, AccessException {
-        System.out.println("Introduce email, first name and second name, separated by space: ");
+    private void addUser() throws Exception {
+        System.out.println("Introduce email, first name and second name, separated by space:");
         List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
         if (attributes.size() != 3)
-            throw new InputException("Wrong inputs for user attributes");
+            throw new InputException("wrong inputs for user attributes");
         service.addUser(attributes.get(0),attributes.get(1),attributes.get(2));
         System.out.println("User added");
     }
@@ -88,8 +88,8 @@ throw e;
      * @throws FileException if file is invalid;
      * @throws RepositoryException if user does not exist.
      */
-    private void deleteUser() throws FileException, RepositoryException, AccessException {
-        System.out.println("Introduce email: ");
+    private void deleteUser() throws Exception {
+        System.out.println("Introduce email:");
         String attribute = (new Scanner(System.in)).nextLine();
         service.deleteUser(attribute);
         System.out.println("User deleted");
@@ -101,11 +101,11 @@ throw e;
      * @throws FileException if file is invalid;
      * @throws RepositoryException if user does not exist.
      */
-    private void updateUser() throws InputException, FileException, RepositoryException, AccessException {
-        System.out.println("Introduce email, first name and second name, separated by space: ");
+    private void updateUser() throws Exception {
+        System.out.println("Introduce email, first name and second name, separated by space:");
         List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
         if (attributes.size() != 3)
-            throw new InputException("Wrong inputs for user attributes");
+            throw new InputException("wrong inputs for user attributes");
         service.updateUser(attributes.get(0),attributes.get(1),attributes.get(2));
         System.out.println("User updated");
     }
@@ -116,11 +116,11 @@ throw e;
      * @throws FileException if file is invalid;
      * @throws RepositoryException if friendship exists.
      */
-    private void addFriendship() throws InputException, FileException, RepositoryException, AccessException {
-        System.out.println("Introduce first and second email, separated by space: ");
+    private void addFriendship() throws Exception {
+        System.out.println("Introduce first and second email, separated by space:");
         List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
         if (attributes.size() != 2)
-            throw new InputException("Wrong inputs for emails");
+            throw new InputException("wrong inputs for emails");
         service.addFriendship(attributes.get(0),attributes.get(1));
         System.out.println("Friendship added");
     }
@@ -131,11 +131,11 @@ throw e;
      * @throws FileException if file is invalid;
      * @throws RepositoryException if friendship does not exits.
      */
-    private void deleteFriendship() throws InputException, FileException, RepositoryException, AccessException {
-        System.out.println("Introduce first and second email, separated by space: ");
+    private void deleteFriendship() throws Exception {
+        System.out.println("Introduce first and second email, separated by space:");
         List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
         if (attributes.size() != 2)
-            throw new InputException("Wrong inputs for emails");
+            throw new InputException("wrong inputs for emails");
         service.deleteFriendship(attributes.get(0),attributes.get(1));
         System.out.println("Friendship deleted");
     }
@@ -146,11 +146,11 @@ throw e;
      * @throws FileException if file is invalid;
      * @throws RepositoryException if friendship does not exits.
      */
-    private void updateFriendship() throws InputException, FileException, RepositoryException, AccessException {
-        System.out.println("Introduce first, second, third and fourth email, separated by space: ");
+    private void updateFriendship() throws Exception {
+        System.out.println("Introduce first, second, third and fourth email, separated by space:");
         List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
         if (attributes.size() != 4)
-            throw new InputException("Wrong inputs for emails");
+            throw new InputException("wrong inputs for emails");
         service.updateFriendship(attributes.get(0),attributes.get(1),attributes.get(2),attributes.get(3));
         System.out.println("Friendship updated");
     }
@@ -158,7 +158,7 @@ throw e;
     /**
      * Shows the friendships and users.
      */
-    private void showEverything() throws FileException {
+    private void showEverything() throws Exception {
         System.out.println("Users:");
         for (User user : service.getUsers())
             System.out.println(user.toString());

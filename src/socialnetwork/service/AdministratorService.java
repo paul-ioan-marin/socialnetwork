@@ -2,11 +2,8 @@ package socialnetwork.service;
 
 import socialnetwork.domain.FriendshipWithStatus;
 import socialnetwork.domain.User;
-import socialnetwork.domain.constants.Constants;
-import socialnetwork.domain.exceptions.FileException;
 import socialnetwork.domain.exceptions.RepositoryException;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class AdministratorService extends AbstractService {
@@ -15,13 +12,13 @@ public class AdministratorService extends AbstractService {
     }
 
     @Override
-    public void addUser(String email, String firstName, String lastName) throws FileException, RepositoryException {
+    public void addUser(String email, String firstName, String lastName) throws Exception {
         User user = users.save(new User(email, firstName, lastName));
         if (user == null) throw new RepositoryException("the email already exists");
     }
 
     @Override
-    public void deleteUser(String email) throws FileException, RepositoryException {
+    public void deleteUser(String email) throws Exception {
         User user = users.findByEmail(email);
         if (user == null)
             throw new RepositoryException("the email does not exits");
@@ -36,7 +33,7 @@ public class AdministratorService extends AbstractService {
     }
 
     @Override
-    public void updateUser(String email, String firstName, String lastName) throws FileException, RepositoryException {
+    public void updateUser(String email, String firstName, String lastName) throws Exception {
         User user = friendships.getUsers().findByEmail(email);
         if (user == null)
             throw new RepositoryException("the email does not exist");
@@ -47,22 +44,20 @@ public class AdministratorService extends AbstractService {
     }
 
     @Override
-    public void addFriendship(String email1, String email2) throws FileException, RepositoryException {
+    public void addFriendship(String email1, String email2) throws Exception {
         if (users.findByEmail(email1) == null)
             throw new RepositoryException("none of the users has one of the emails");
         if (users.findByEmail(email2) == null)
             throw new RepositoryException("none of the users has one of the emails");
-        FriendshipWithStatus friendship = friendships.save(new FriendshipWithStatus(users.findByEmail(email1),
-                users.findByEmail(email2), Constants.Status.ACCEPTED, LocalDateTime.now()));
+        FriendshipWithStatus friendship = friendships.save(new FriendshipWithStatus(users.findByEmail(email1), users.findByEmail(email2)));
         if (friendship == null) throw new RepositoryException("the friendship already exists");
     }
 
     @Override
-    public void deleteFriendship(String email1, String email2) throws FileException, RepositoryException {
+    public void deleteFriendship(String email1, String email2) throws Exception {
         if (users.findByEmail(email1) == null || users.findByEmail(email2) == null)
             throw new RepositoryException("none of the users has one of the emails");
-        FriendshipWithStatus friendship = new FriendshipWithStatus(users.findByEmail(email1), users.findByEmail(email2),
-                Constants.Status.ACCEPTED, LocalDateTime.now());
+        FriendshipWithStatus friendship = new FriendshipWithStatus(users.findByEmail(email1), users.findByEmail(email2));
         for (FriendshipWithStatus i : friendships.findAll())
             if (i.equals(friendship)) {
                 friendships.delete(i.getId());
@@ -71,13 +66,12 @@ public class AdministratorService extends AbstractService {
     }
 
     @Override
-    public void updateFriendship(String email1, String email2, String email3, String email4) throws FileException, RepositoryException {
+    public void updateFriendship(String email1, String email2, String email3, String email4) throws Exception {
         if (users.findByEmail(email1) == null)
             throw new RepositoryException("none of the users has one of the emails");
         if (users.findByEmail(email2) == null)
             throw new RepositoryException("none of the users has one of the emails");
-        FriendshipWithStatus friendship = new FriendshipWithStatus(users.findByEmail(email1), users.findByEmail(email2),
-                Constants.Status.ACCEPTED, LocalDateTime.now());
+        FriendshipWithStatus friendship = new FriendshipWithStatus(users.findByEmail(email1), users.findByEmail(email2));
         for (FriendshipWithStatus i : friendships.findAll())
             if (i.equals(friendship)) {
                 friendship.setId(i.getId());

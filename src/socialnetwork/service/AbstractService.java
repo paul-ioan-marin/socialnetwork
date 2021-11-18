@@ -13,7 +13,7 @@ public class AbstractService {
     protected FriendshipStatusRepositoryDB friendships;
     protected UserRepositoryDB users;
 
-    public AbstractService(String url, String username, String password) throws FileException {
+    public AbstractService(String url, String username, String password) throws Exception {
         this.friendships = new FriendshipStatusRepositoryDB(url, username, password);
         users = this.friendships.getUsers();
     }
@@ -26,18 +26,18 @@ public class AbstractService {
     /**
      * @return the friendships in the network.
      */
-    public Iterable<FriendshipWithStatus> getFriendships() throws FileException {
+    public Iterable<FriendshipWithStatus> getFriendships() throws Exception {
         return this.friendships.findAll();
     }
 
     /**
      * @return the users in the network.
      */
-    public Iterable<User> getUsers() throws FileException {
+    public Iterable<User> getUsers() throws Exception {
         return users.findAll();
     }
 
-    public User findUserByEmail(String email) throws FileException {
+    public User findUserByEmail(String email) throws Exception {
         return users.findByEmail(email);
     }
 
@@ -49,7 +49,7 @@ public class AbstractService {
      * @throws FileException if the file is invalid;
      * @throws RepositoryException if the email exists.
      */
-    public void addUser(String email, String firstName, String lastName) throws FileException, RepositoryException, AccessException {
+    public void addUser(String email, String firstName, String lastName) throws Exception {
         throw new AccessException("inaccessible method");
     }
 
@@ -59,7 +59,7 @@ public class AbstractService {
      * @throws FileException if the file is invalid;
      * @throws RepositoryException if the email does not exist.
      */
-    public void deleteUser(String email) throws FileException, RepositoryException, AccessException {
+    public void deleteUser(String email) throws Exception {
         throw new AccessException("inaccessible method");
     }
 
@@ -71,7 +71,7 @@ public class AbstractService {
      * @throws FileException if the file is invalid;
      * @throws RepositoryException if the email does not exist.
      */
-    public void updateUser(String email, String firstName, String lastName) throws FileException, RepositoryException, AccessException {
+    public void updateUser(String email, String firstName, String lastName) throws Exception {
         throw new AccessException("inaccessible method");
     }
 
@@ -82,7 +82,7 @@ public class AbstractService {
      * @throws FileException if the file is invalid;
      * @throws RepositoryException if the friendship exists.
      */
-    public void addFriendship(String email1, String email2) throws FileException, RepositoryException, AccessException {
+    public void addFriendship(String email1, String email2) throws Exception {
         throw new AccessException("inaccessible method");
     }
 
@@ -93,7 +93,7 @@ public class AbstractService {
      * @throws FileException if the file is invalid;
      * @throws RepositoryException if the friendship does not exist.
      */
-    public void deleteFriendship(String email1, String email2) throws FileException, RepositoryException, AccessException {
+    public void deleteFriendship(String email1, String email2) throws Exception {
         throw new AccessException("inaccessible method");
     }
 
@@ -106,14 +106,26 @@ public class AbstractService {
      * @throws FileException if the file is invalid;
      * @throws RepositoryException if the friendship does not exist.
      */
-    public void updateFriendship(String email1, String email2, String email3, String email4) throws FileException, RepositoryException, AccessException {
+    public void updateFriendship(String email1, String email2, String email3, String email4) throws Exception {
         throw new AccessException("inaccessible method");
     }
 
-    public void sendRequest(String email) throws FileException, RepositoryException, AccessException {
+    public void sendRequest(String email) throws Exception {
         throw new AccessException("inaccessible method");
     }
-    public FriendshipList acceptedFriendships() throws FileException, AccessException {
+    public void acceptRequest(String email) throws Exception {
+        throw new AccessException("inaccessible method");
+    }
+    public void declineRequest(String email) throws Exception {
+        throw new AccessException("inaccessible method");
+    }
+    public void deleteFriend(String email) throws Exception {
+        throw new AccessException("inaccessible method");
+    }
+    public FriendshipList acceptedFriendships() throws Exception {
+        throw new AccessException("inaccessible method");
+    }
+    public FriendshipList pendingFriendships() throws Exception {
         throw new AccessException("inaccessible method");
     }
 }

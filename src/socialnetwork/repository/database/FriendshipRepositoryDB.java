@@ -16,7 +16,7 @@ public class FriendshipRepositoryDB extends AbstractFriendshipRepositoryDB<Frien
     }
 
     @Override
-    public Friendship save(Friendship friendship) throws FileException {
+    public Friendship save(Friendship friendship) throws FileException, Exception {
         String sql = "insert into friendships (id, friend_1, friend_2) values (?, ?, ?)";
         String[] attributes = new String[] {friendship.getId().toString(),
                 friendship.getLeft().getId().toString(), friendship.getRight().getId().toString()};
@@ -24,7 +24,7 @@ public class FriendshipRepositoryDB extends AbstractFriendshipRepositoryDB<Frien
     }
 
     @Override
-    public Friendship update(Friendship friendship) throws FileException {
+    public Friendship update(Friendship friendship) throws FileException, Exception {
         String sql = "update friendships set friend_1 = ?, friend_2 = ? where id = ?";
         String[] attributes = new String[] {friendship.getLeft().getId().toString(),
                 friendship.getRight().getId().toString(), friendship.getId().toString()};

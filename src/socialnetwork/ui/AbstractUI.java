@@ -13,7 +13,7 @@ public class AbstractUI {
     public AbstractUI() {
         try {
             service = new AbstractService(URL, USERNAME, PASSWORD);
-        } catch (FileException e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -33,7 +33,8 @@ public class AbstractUI {
             }
             System.out.println("invalid email");
         } catch (FileException e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
+throw e;
         }
     }
 
