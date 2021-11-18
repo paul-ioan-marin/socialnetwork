@@ -1,5 +1,6 @@
 package socialnetwork.service;
 
+import socialnetwork.domain.Friendship;
 import socialnetwork.domain.FriendshipWithStatus;
 import socialnetwork.domain.User;
 import socialnetwork.domain.containers.FriendshipList;
@@ -80,6 +81,22 @@ public class AbstractService {
         return sameLastName;
     }
 
+    /**
+     * Makes a string that contains the people with that particular email and mont
+     * @param user the user that we are looking for
+     * @param month the month in which he made friends
+     * @return a string with the name and date
+     * @throws FileException
+     */
+    public String getFriendshipByMonth(User user, int month) throws FileException {
+        String sameMonthFriends =  StreamSupport.stream(friendships.findAll().spliterator(), false)
+                .filter(friends -> (friends.getLeft().getEmail().equals(user.getEmail())||friends.getRight().getEmail().equals(user.getEmail())))
+                .filter(friends -> friends.getDate().getMonthValue() == month)
+                .map( friends -> friends.getRight().getFullName()+" | "+friends.getLeft().getFullName()+"" +
+                        " | "+friends.getDate().toString() )
+                .collect( Collectors.joining( "\n" ));
+        return sameMonthFriends;
+    }
 
     /**
      * Adds user by the given attributes;

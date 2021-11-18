@@ -36,6 +36,8 @@ public class User extends Entity<UUID> {
         return lastName;
     }
 
+    public String getFullName(){return firstName+" "+lastName;}
+
     public List<User> getFriends() {
         return friends;
     }
