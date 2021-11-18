@@ -1,4 +1,4 @@
-package socialnetwork.repository.database;
+package socialnetwork.domain;
 
 import socialnetwork.domain.User;
 import socialnetwork.domain.containers.UserList;

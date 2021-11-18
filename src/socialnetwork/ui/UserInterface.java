@@ -70,7 +70,7 @@ public class UserInterface {
      * UI adds an user;
      * @throws InputException if input is invalid;
      * @throws FileException if file is invalid;
-     * @throws RepositoryException if user exists.
+
      */
     public void addUser() throws InputException, FileException, RepositoryException {
         System.out.println("Introduce email, first name and second name, separated by space: ");
