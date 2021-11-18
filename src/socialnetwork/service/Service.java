@@ -3,6 +3,7 @@ package socialnetwork.service;
 import socialnetwork.domain.Friendship;
 import socialnetwork.domain.FriendshipWithStatus;
 import socialnetwork.domain.User;
+import socialnetwork.domain.containers.UserList;
 import socialnetwork.domain.exceptions.FileException;
 import socialnetwork.domain.exceptions.RepositoryException;
 import socialnetwork.repository.database.FriendshipRepositoryDB;
@@ -10,9 +11,9 @@ import socialnetwork.repository.database.FriendshipStatusRepositoryDB;
 import socialnetwork.repository.database.SuperFriendshipRepositoryDB;
 import socialnetwork.repository.database.UserRepositoryDB;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class Service {
     private final FriendshipStatusRepositoryDB friendships;
@@ -48,8 +49,42 @@ public class Service {
         return users.findAll();
     }
 
+    /**
+     * Find a user in the db by the email
+     * @param email the email that was typed
+     * @return the user with that email
+     * @throws FileException if email doesn't exist
+     */
     public User findUserByEmail(String email) throws FileException {
         return users.findByEmail(email);
+    }
+
+    /**
+     * Makes a list of people with the same first name
+     * @param first_name the first name we are looking for
+     * @return a list of people with the same first name
+     * @throws FileException if first name doesn't exist
+     */
+    public List<User> findUsersByFirstName(String first_name) throws FileException{
+        Iterable<User> iterableUsers = users.findAll();
+        List<User> sameFirstName =  StreamSupport.stream(iterableUsers.spliterator(), false)
+                .filter( user -> user.getFirstName().equals(first_name))
+                .collect(Collectors.toList());
+        return sameFirstName;
+    }
+
+    /**
+     * Makes a list of people with the same last name
+     * @param last_name the last name we are looking for
+     * @return a list of people with the same last name
+     * @throws FileException if last name doesn't exist
+     */
+    public List<User> findUsersByLastName(String last_name) throws FileException{
+        Iterable<User> iterableUsers = users.findAll();
+        List<User> sameLastName =  StreamSupport.stream(iterableUsers.spliterator(), false)
+                .filter( user -> user.getLastName().equals(last_name))
+                .collect(Collectors.toList());
+        return sameLastName;
     }
 
     /**
