@@ -10,6 +10,9 @@ import java.sql.*;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Repository of users.
+ */
 public class UserRepositoryDB extends RepositoryDB<User> {
 
     public UserRepositoryDB(String url, String username, String password) {
@@ -23,6 +26,13 @@ public class UserRepositoryDB extends RepositoryDB<User> {
         return super.findOne(sql, uuid.toString());
     }
 
+    /**
+     * Finds user by email;
+     * @param email the given email;
+     * @return the user;
+     * @throws IdException if the email is null;
+     * @throws FileException if the file is not valid.
+     */
     public User findByEmail(String email) throws IdException, FileException {
         String sql = "select * from users where email = ?";
         return super.findOne(sql, email);
@@ -57,6 +67,7 @@ public class UserRepositoryDB extends RepositoryDB<User> {
         return super.update(user, sql, attributes);
     }
 
+    @Override
     protected User getFromDB(ResultSet resultSet) throws FileException {
         Map<String, String> fromDB = RepositoryDB.getStringDB(resultSet, new String[]{ID, EMAIL, FNAME, LNAME});
         User result = new User(fromDB.get(EMAIL), fromDB.get(FNAME), fromDB.get(LNAME));

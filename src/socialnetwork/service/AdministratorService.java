@@ -6,6 +6,9 @@ import socialnetwork.domain.exceptions.RepositoryException;
 
 import java.util.ArrayList;
 
+/**
+ * Administrator service.
+ */
 public class AdministratorService extends AbstractService {
     public AdministratorService(AbstractService service) {
         super(service);

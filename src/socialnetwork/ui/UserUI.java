@@ -10,6 +10,9 @@ import java.util.Scanner;
 
 import static socialnetwork.domain.constants.Constants.DATEFORMATTER;
 
+/**
+ * The interface for the user.
+ */
 public class UserUI extends AbstractUI {
 
     private final User user;
@@ -49,10 +52,6 @@ throw e;
         System.out.println("Goodbye");
     }
 
-    /**
-     * Shows the menu;
-     * @return the input;
-     */
     private String input() {
         System.out.println("*****************************************");
         System.out.println("1 - Send a friend request");
@@ -66,6 +65,9 @@ throw e;
         return (new Scanner(System.in)).nextLine();
     }
 
+    /**
+     * UI sends a request.
+     */
     private void sendRequest() throws Exception {
         System.out.println("Introduce the email:");
         String email = (new Scanner(System.in)).nextLine();
@@ -73,6 +75,9 @@ throw e;
         System.out.println("Request sent");
     }
 
+    /**
+     * UI accepts a requet.
+     */
     private void acceptRequest() throws Exception {
         System.out.println("Introduce the email:");
         String email = (new Scanner(System.in)).nextLine();
@@ -80,6 +85,9 @@ throw e;
         System.out.println("Request accepted");
     }
 
+    /**
+     * UI declines a request.
+     */
     private void declineRequest() throws Exception {
         System.out.println("Introduce the email:");
         String email = (new Scanner(System.in)).nextLine();
@@ -87,6 +95,9 @@ throw e;
         System.out.println("Request declined");
     }
 
+    /**
+     * UI deletes a request.
+     */
     private void deleteFriend() throws Exception {
         System.out.println("Introduce the email:");
         String email = (new Scanner(System.in)).nextLine();
@@ -94,6 +105,10 @@ throw e;
         System.out.println("Friend deleted");
     }
 
+    /**
+     * Shows a specific list;
+     * @param list the specific list.
+     */
     private void showList(SpecificList list) throws Exception {
         for (FriendshipWithStatus friendship : list.process())
             System.out.println("Friendship: " + friendship.theOtherFriend(this.user).getLastName() + " | " +
@@ -101,11 +116,17 @@ throw e;
                     friendship.getDate().toLocalDate().format(DATEFORMATTER));
     }
 
+    /**
+     * Shows the accepted friendships.
+     */
     private void acceptedFriendships() throws Exception {
         System.out.println("Accepted friendships:");
         showList(() -> service.acceptedFriendships());
     }
 
+    /**
+     * Shows the pending list.
+     */
     private void pendingFriendships() throws Exception {
         System.out.println("Pending list:");
         showList(() -> service.pendingFriendships());

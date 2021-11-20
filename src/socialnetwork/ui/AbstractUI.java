@@ -7,6 +7,9 @@ import java.util.Scanner;
 
 import static socialnetwork.domain.constants.PersonalConstants.*;
 
+/**
+ * Abstract interface.
+ */
 public class AbstractUI {
     protected AbstractService service;
 
@@ -18,6 +21,9 @@ public class AbstractUI {
         }
     }
 
+    /**
+     * Logs in the admin/ user.
+     */
     public void login() throws Exception {
         System.out.println("*****************************************");
         System.out.println("Introduce the email for login: ");
@@ -38,5 +44,14 @@ throw e;
         }
     }
 
-    public void run() throws Exception {};
+    /**
+     * Runs the menu loop.
+     */
+    public void run() throws Exception {}
+
+    /**
+     * Shows the menu;
+     * @return the input;
+     */
+    private String input() { return null; }
 }

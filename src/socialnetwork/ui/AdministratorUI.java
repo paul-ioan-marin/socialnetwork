@@ -2,23 +2,20 @@ package socialnetwork.ui;
 
 import socialnetwork.domain.Friendship;
 import socialnetwork.domain.User;
-import socialnetwork.domain.exceptions.AccessException;
-import socialnetwork.domain.exceptions.FileException;
 import socialnetwork.domain.exceptions.InputException;
-import socialnetwork.domain.exceptions.RepositoryException;
 import socialnetwork.service.AdministratorService;
 
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The interface of the administrator.
+ */
 public class AdministratorUI extends AbstractUI {
     public AdministratorUI(AbstractUI ui) {
         this.service = new AdministratorService(ui.service);
     }
 
-    /**
-     * Runs the menu loop;
-     */
     @Override
     public void run() throws Exception {
         try {
@@ -50,10 +47,6 @@ throw e;
         System.out.println("Goodbye");
     }
 
-    /**
-     * Shows the menu;
-     * @return the input;
-     */
     private String input() {
         System.out.println("*****************************************");
         System.out.println("1 - Add user");
@@ -70,9 +63,6 @@ throw e;
 
     /**
      * UI adds an user;
-     * @throws InputException if input is invalid;
-     * @throws FileException if file is invalid;
-     * @throws RepositoryException if user exists.
      */
     private void addUser() throws Exception {
         System.out.println("Introduce email, first name and second name, separated by space:");
@@ -85,8 +75,6 @@ throw e;
 
     /**
      * UI deletes an user;
-     * @throws FileException if file is invalid;
-     * @throws RepositoryException if user does not exist.
      */
     private void deleteUser() throws Exception {
         System.out.println("Introduce email:");
@@ -97,9 +85,6 @@ throw e;
 
     /**
      * UI updates an user;
-     * @throws InputException if input is invalid;
-     * @throws FileException if file is invalid;
-     * @throws RepositoryException if user does not exist.
      */
     private void updateUser() throws Exception {
         System.out.println("Introduce email, first name and second name, separated by space:");
@@ -112,9 +97,6 @@ throw e;
 
     /**
      * UI adds a friendship;
-     * @throws InputException if input is invalid;
-     * @throws FileException if file is invalid;
-     * @throws RepositoryException if friendship exists.
      */
     private void addFriendship() throws Exception {
         System.out.println("Introduce first and second email, separated by space:");
@@ -127,9 +109,6 @@ throw e;
 
     /**
      * UI deletes a friendship;
-     * @throws InputException if input is invalid;
-     * @throws FileException if file is invalid;
-     * @throws RepositoryException if friendship does not exits.
      */
     private void deleteFriendship() throws Exception {
         System.out.println("Introduce first and second email, separated by space:");
@@ -142,9 +121,6 @@ throw e;
 
     /**
      * UI updates a friendship;
-     * @throws InputException if input is invalid;
-     * @throws FileException if file is invalid;
-     * @throws RepositoryException if friendship does not exits.
      */
     private void updateFriendship() throws Exception {
         System.out.println("Introduce first, second, third and fourth email, separated by space:");

@@ -8,22 +8,6 @@ public class Friendship extends Pair<User, User> {
     }
 
     /**
-     * Adds the users in the friends lists.
-     */
-    public void addFriends() {
-        getLeft().addFriend(getRight());
-        getRight().addFriend(getLeft());
-    }
-
-    /**
-     * Deletes the users in the friends lists.
-     */
-    public void deleteFriends() {
-        getLeft().deleteFriend(getRight());
-        getRight().deleteFriend(getLeft());
-    }
-
-    /**
      * Verifies if an user is in a friendship;
      * @param user the user;
      * @return the value of truth.
@@ -48,11 +32,6 @@ public class Friendship extends Pair<User, User> {
     @Override
     public String toString() {
         return "Friendship: " + getLeft().getEmail() + " , " + getRight().getEmail();
-    }
-
-    @Override
-    public String getFromColumn(int column) {
-        return null;
     }
 
     @Override

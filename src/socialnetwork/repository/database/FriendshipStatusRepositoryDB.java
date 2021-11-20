@@ -11,6 +11,9 @@ import java.util.UUID;
 
 import static socialnetwork.domain.constants.Constants.*;
 
+/**
+ * Repository of friendship with status and date.
+ */
 public class FriendshipStatusRepositoryDB extends AbstractFriendshipRepositoryDB<FriendshipWithStatus> {
     public FriendshipStatusRepositoryDB(String url, String username, String password) {
         super(url, username, password);
@@ -44,15 +47,33 @@ public class FriendshipStatusRepositoryDB extends AbstractFriendshipRepositoryDB
         return result;
     }
 
+    /**
+     * Accepts a friendship given by parameter;
+     * @param friendship the given friendship;
+     * @return the new friendship (updated);
+     * @throws FileException if the file is not valid.
+     */
     public FriendshipWithStatus accept(FriendshipWithStatus friendship) throws FileException, Exception {
         friendship.accept();
         return update(friendship);
     }
 
+    /**
+     * Creates a friendship given by parameter;
+     * @param friendship the given friendship;
+     * @return the new friendship;
+     * @throws FileException if the file is not valid.
+     */
     public FriendshipWithStatus request(FriendshipWithStatus friendship) throws FileException, Exception {
         return save(friendship);
     }
 
+    /**
+     * Declines a friendship given by parameter;
+     * @param friendship the given friendship;
+     * @return the deleted friendship;
+     * @throws FileException if the file is not valid.
+     */
     public FriendshipWithStatus decline(FriendshipWithStatus friendship) throws FileException, Exception {
         return delete(friendship.getId());
     }

@@ -10,6 +10,9 @@ import java.sql.ResultSet;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Repository of regular friendship.
+ */
 public class FriendshipRepositoryDB extends AbstractFriendshipRepositoryDB<Friendship> {
     public FriendshipRepositoryDB(String url, String username, String password) {
         super(url, username, password);

@@ -7,6 +7,10 @@ import socialnetwork.domain.validator.FriendshipValidator;
 
 import java.util.UUID;
 
+/**
+ * Abstract repository of friendships.
+ * @param <E> the class (kind) of friendship.
+ */
 public abstract class AbstractFriendshipRepositoryDB<E extends Friendship> extends RepositoryDB<E> {
     protected final UserRepositoryDB users;
 
@@ -22,6 +26,12 @@ public abstract class AbstractFriendshipRepositoryDB<E extends Friendship> exten
         return super.findOne(sql, uuid.toString());
     }
 
+    /**
+     * Finds all the friendships of an user, given by id;
+     * @param id the given id;
+     * @return an Iterable containing the friendships that user has.
+     * @throws FileException if the file is not valid.
+     */
     public Iterable<E> findByFriend(UUID id) throws FileException {
         String sql = "select * from friendships where friend_1 = ? or friend_2 = ?";
         return super.findAll(sql, new String[]{id.toString(), id.toString()});
@@ -33,7 +43,11 @@ public abstract class AbstractFriendshipRepositoryDB<E extends Friendship> exten
         return super.findAll(sql, new String[]{});
     }
 
-    public UserRepositoryDB getUsers() throws IdException, FileException {
+    /**
+     * Returns the repository of users;
+     * @return the repository of users.
+     */
+    public UserRepositoryDB getUsers() {
         return users;
     }
 

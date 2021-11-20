@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 
 import static socialnetwork.domain.constants.Constants.DATEFORMATTER;
 
+/**
+ * Extension of friendship that has a status and a starting date.
+ */
 public class FriendshipWithStatus extends Friendship {
     private LocalDateTime date;
     private Status status;
@@ -22,19 +25,37 @@ public class FriendshipWithStatus extends Friendship {
         this.date = date;
     }
 
+    /**
+     * Returns the date of the friendship;
+     * @return the date of the friendship.
+     */
     public LocalDateTime getDate() { return date; }
 
+    /**
+     * Sets the date of the friendship from a given date;
+     * @param date the given date.
+     */
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
+    /**
+     * Returns the status of the friendship;
+     * @return the status of the friendship.
+     */
     public Status status() { return status; }
 
+    /**
+     * Accepts a friendship.
+     */
     public void accept() {
         this.status = Status.ACCEPTED;
         this.date = LocalDateTime.now();
     }
 
+    /**
+     * Declines a friendship.
+     */
     public void decline() {
         this.status = Status.DECLINED;
     }
