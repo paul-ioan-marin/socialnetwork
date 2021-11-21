@@ -1,8 +1,9 @@
-package socialnetwork.repository.database;
+package socialnetwork.repository.database.friendship;
 
 import socialnetwork.domain.FriendshipWithStatus;
 import socialnetwork.domain.User;
 import socialnetwork.domain.exceptions.FileException;
+import socialnetwork.repository.database.RepositoryDB;
 
 import java.sql.ResultSet;
 import java.time.LocalDateTime;

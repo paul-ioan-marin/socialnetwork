@@ -53,5 +53,5 @@ throw e;
      * Shows the menu;
      * @return the input;
      */
-    private String input() { return null; }
+    protected String input() { return null; }
 }

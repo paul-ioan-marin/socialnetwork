@@ -131,7 +131,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
      * @return true if the entity is in repository, false otherwise.
      * @throws FileException if the file is not valid.
      */
-    protected boolean contains(E entity) throws FileException {
+    public boolean contains(E entity) throws FileException {
         for (E e : this.findAll()) if (e.equals(entity)) return true;
         return false;
     }

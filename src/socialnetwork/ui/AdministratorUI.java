@@ -47,7 +47,8 @@ throw e;
         System.out.println("Goodbye");
     }
 
-    private String input() {
+    @Override
+    protected String input() {
         System.out.println("*****************************************");
         System.out.println("1 - Add user");
         System.out.println("2 - Delete user");

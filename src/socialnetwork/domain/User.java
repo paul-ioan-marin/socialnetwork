@@ -1,9 +1,7 @@
 package socialnetwork.domain;
 
-import socialnetwork.domain.containers.UserList;
 import socialnetwork.domain.primary.Entity;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 

@@ -4,7 +4,7 @@ import socialnetwork.domain.FriendshipWithStatus;
 import socialnetwork.domain.User;
 import socialnetwork.domain.containers.FriendshipList;
 import socialnetwork.domain.exceptions.AccessException;
-import socialnetwork.repository.database.FriendshipStatusRepositoryDB;
+import socialnetwork.repository.database.friendship.FriendshipStatusRepositoryDB;
 import socialnetwork.repository.database.UserRepositoryDB;
 
 /**

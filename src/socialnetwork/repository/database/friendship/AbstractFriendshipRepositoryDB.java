@@ -1,9 +1,11 @@
-package socialnetwork.repository.database;
+package socialnetwork.repository.database.friendship;
 
 import socialnetwork.domain.Friendship;
 import socialnetwork.domain.exceptions.FileException;
 import socialnetwork.domain.exceptions.IdException;
 import socialnetwork.domain.validator.FriendshipValidator;
+import socialnetwork.repository.database.RepositoryDB;
+import socialnetwork.repository.database.UserRepositoryDB;
 
 import java.util.UUID;
 

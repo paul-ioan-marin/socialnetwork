@@ -1,8 +1,10 @@
-package socialnetwork.repository.database;
+package socialnetwork.repository.database.friendship;
 
 import socialnetwork.domain.Friendship;
 import socialnetwork.domain.User;
 import socialnetwork.domain.exceptions.FileException;
+import socialnetwork.repository.database.RepositoryDB;
+
 import static socialnetwork.domain.constants.Constants.*;
 
 

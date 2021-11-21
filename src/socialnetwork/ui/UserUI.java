@@ -1,6 +1,5 @@
 package socialnetwork.ui;
 
-import socialnetwork.domain.FriendshipWithStatus;
 import socialnetwork.domain.User;
 import socialnetwork.domain.util.SpecificList;
 import socialnetwork.domain.exceptions.InputException;
@@ -14,7 +13,6 @@ import static socialnetwork.domain.constants.Constants.DATEFORMATTER;
  * The interface for the user.
  */
 public class UserUI extends AbstractUI {
-
     private final User user;
 
     public UserUI(AbstractUI ui, User user) {
@@ -52,7 +50,8 @@ throw e;
         System.out.println("Goodbye");
     }
 
-    private String input() {
+    @Override
+    protected String input() {
         System.out.println("*****************************************");
         System.out.println("1 - Send a friend request");
         System.out.println("2 - Accept a friend request");
@@ -110,10 +109,9 @@ throw e;
      * @param list the specific list.
      */
     private void showList(SpecificList list) throws Exception {
-        for (FriendshipWithStatus friendship : list.process())
-            System.out.println("Friendship: " + friendship.theOtherFriend(this.user).getLastName() + " | " +
-                    friendship.theOtherFriend(this.user).getFirstName() + " | " +
-                    friendship.getDate().toLocalDate().format(DATEFORMATTER));
+        list.process().forEach(friendship -> System.out.println("Friendship: " + friendship.
+                theOtherFriend(this.user).getLastName() + " | " + friendship.theOtherFriend(this.user).
+                getFirstName() + " | " + friendship.getDate().toLocalDate().format(DATEFORMATTER)));
     }
 
     /**
@@ -121,7 +119,7 @@ throw e;
      */
     private void acceptedFriendships() throws Exception {
         System.out.println("Accepted friendships:");
-        showList(() -> service.acceptedFriendships());
+        showList(this.service::acceptedFriendships);
     }
 
     /**
@@ -129,6 +127,6 @@ throw e;
      */
     private void pendingFriendships() throws Exception {
         System.out.println("Pending list:");
-        showList(() -> service.pendingFriendships());
+        showList(this.service::pendingFriendships);
     }
 }
