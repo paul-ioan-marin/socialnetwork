@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static socialnetwork.domain.constants.Constants.Status.ACCEPTED;
+
 public class AbstractService {
     protected FriendshipStatusRepositoryDB friendships;
     protected UserRepositoryDB users;
@@ -90,10 +92,12 @@ public class AbstractService {
      */
     public String getFriendshipByMonth(User user, int month) throws FileException {
         String sameMonthFriends =  StreamSupport.stream(friendships.findAll().spliterator(), false)
-                .filter(friends -> (friends.getLeft().getEmail().equals(user.getEmail())||friends.getRight().getEmail().equals(user.getEmail())))
+                .filter(friends -> friends.status().equals(ACCEPTED))
+                .filter(friends -> (friends.getLeft().getEmail().equals(user.getEmail())||
+                        friends.getRight().getEmail().equals(user.getEmail())))
                 .filter(friends -> friends.getDate().getMonthValue() == month)
-                .map( friends -> friends.getRight().getFullName()+" | "+friends.getLeft().getFullName()+"" +
-                        " | "+friends.getDate().toString() )
+                .map( friends -> friends.theOtherFriend(user).getFirstName()+" | "+ friends.theOtherFriend(user).getLastName() +
+                        " | "+friends.getDate().toString())
                 .collect( Collectors.joining( "\n" ))
                 .replace("T", " ");
         return sameMonthFriends;
