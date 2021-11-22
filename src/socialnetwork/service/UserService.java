@@ -7,7 +7,6 @@ import socialnetwork.domain.containers.FriendshipList;
 import socialnetwork.domain.exceptions.RepositoryException;
 import socialnetwork.domain.util.*;
 
-
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 

@@ -7,6 +7,12 @@ import socialnetwork.domain.exceptions.AccessException;
 import socialnetwork.repository.database.friendship.FriendshipStatusRepositoryDB;
 import socialnetwork.repository.database.UserRepositoryDB;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static socialnetwork.domain.constants.Constants.Status.*;
+
 /**
  * Abstract Service.
  */
@@ -45,6 +51,54 @@ public class AbstractService {
      */
     public User findUserByEmail(String email) throws Exception {
         return users.findByEmail(email);
+    }
+
+    /**
+     * Makes a list of people with the same first name
+     * @param first_name the first name we are looking for
+     * @return a list of people with the same first name
+     * @throws Exception if first name doesn't exist
+     */
+    public List<User> findUsersByFirstName(String first_name) throws Exception {
+        Iterable<User> iterableUsers = users.findAll();
+        List<User> sameFirstName =  StreamSupport.stream(iterableUsers.spliterator(), false)
+                .filter( user -> user.getFirstName().equals(first_name))
+                .collect(Collectors.toList());
+        return sameFirstName;
+    }
+
+    /**
+     * Makes a list of people with the same last name
+     * @param last_name the last name we are looking for
+     * @return a list of people with the same last name
+     * @throws Exception if last name doesn't exist
+     */
+    public List<User> findUsersByLastName(String last_name) throws Exception {
+        Iterable<User> iterableUsers = users.findAll();
+        List<User> sameLastName =  StreamSupport.stream(iterableUsers.spliterator(), false)
+                .filter( user -> user.getLastName().equals(last_name))
+                .collect(Collectors.toList());
+        return sameLastName;
+    }
+
+    /**
+     * Makes a string that contains the people with that particular email and month
+     * @param user the user that we are looking for
+     * @param month the month in which he made friends
+     * @return a string with the name and date
+     * @throws Exception
+     */
+    public String getFriendshipByMonth(User user, int month) throws Exception {
+        String sameMonthFriends =  StreamSupport.stream(friendships.findAll().spliterator(), false)
+                .filter(friends -> friends.status().equals(ACCEPTED))
+                .filter(friends -> (friends.getLeft().getEmail().equals(user.getEmail())||
+                        friends.getRight().getEmail().equals(user.getEmail())))
+                .filter(friends -> friends.getDate().getMonthValue() == month)
+                .map( friends -> friends.theOtherFriend(user).getFirstName()+" | "+ friends.theOtherFriend(user).getLastName() +
+                        " | "+friends.getDate().toString())
+                .collect( Collectors.joining( "\n" ))
+                .replace("T", " ");
+        return sameMonthFriends;
     }
 
     /**

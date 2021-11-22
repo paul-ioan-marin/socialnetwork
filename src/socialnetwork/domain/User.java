@@ -68,6 +68,10 @@ public class User extends Entity<UUID> {
         this.lastName = lastName;
     }
 
+    public String getFullName() {
+        return this.firstName  + " " + this.lastName;
+    }
+
     @Override
     public String toString() {
         return "User{" +
