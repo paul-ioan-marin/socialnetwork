@@ -8,22 +8,6 @@ public class Friendship extends Pair<User, User> {
     }
 
     /**
-     * Adds the users in the friends lists.
-     */
-    public void addFriends() {
-        getLeft().addFriend(getRight());
-        getRight().addFriend(getLeft());
-    }
-
-    /**
-     * Deletes the users in the friends lists.
-     */
-    public void deleteFriends() {
-        getLeft().deleteFriend(getRight());
-        getRight().deleteFriend(getLeft());
-    }
-
-    /**
      * Verifies if an user is in a friendship;
      * @param user the user;
      * @return the value of truth.
@@ -32,14 +16,22 @@ public class Friendship extends Pair<User, User> {
         return ((getLeft().equals(user)) || (getRight().equals(user)));
     }
 
-    @Override
-    public String toString() {
-        return "Friendship: " + getLeft().getEmail() + " , " + getRight().getEmail();
+    /**
+     * Return the friend of an user in a friendship;
+     * @param user the user
+     * @return the other friend; null if the given user is not in friendship.
+     */
+    public User theOtherFriend(User user) {
+        if (getLeft().equals(user))
+            return getRight();
+        if (getRight().equals(user))
+            return getLeft();
+        return null;
     }
 
     @Override
-    public String getFromColumn(int column) {
-        return null;
+    public String toString() {
+        return "Friendship: " + getLeft().getEmail() + " , " + getRight().getEmail();
     }
 
     @Override

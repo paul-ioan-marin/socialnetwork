@@ -10,15 +10,21 @@ import java.util.Objects;
 public abstract class Entity<ID> {
     private ID id;
 
+    /**
+     * Returns the id of the entity;
+     * @return the id of the entity.
+     */
     public ID getId() {
         return this.id;
     }
 
+    /**
+     * Sets the id of the entity using a given id;
+     * @param id the given id.
+     */
     public void setId(ID id) {
         this.id = id;
     }
-
-    public abstract String getFromColumn(int column);
 
     @Override
     public boolean equals(Object o) {

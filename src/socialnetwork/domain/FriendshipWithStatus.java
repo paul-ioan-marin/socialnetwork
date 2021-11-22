@@ -1,28 +1,67 @@
 package socialnetwork.domain;
 
-import java.time.LocalDate;
+import socialnetwork.domain.constants.Constants.Status;
 
+import java.time.LocalDateTime;
+
+import static socialnetwork.domain.constants.Constants.DATEFORMATTER;
+
+/**
+ * Extension of friendship that has a status and a starting date.
+ */
 public class FriendshipWithStatus extends Friendship {
-    private LocalDate date;
-    private boolean status;
+    private LocalDateTime date;
+    private Status status;
 
     public FriendshipWithStatus(User user1, User user2) {
         super(user1, user2);
-        this.status = false;
+        this.status = Status.PENDING;
+        this.date = LocalDateTime.now();
     }
 
-    public LocalDate getDate() { return date; }
-
-    public void setDate(LocalDate date) {
+    public FriendshipWithStatus(User user1, User user2, Status status, LocalDateTime date) {
+        super(user1, user2);
+        this.status = status;
         this.date = date;
     }
 
-    public boolean status() { return status; }
+    /**
+     * Returns the date of the friendship;
+     * @return the date of the friendship.
+     */
+    public LocalDateTime getDate() { return date; }
 
-    public void accept() {
-        this.status = true;
-        this.date = LocalDate.now();
+    /**
+     * Sets the date of the friendship from a given date;
+     * @param date the given date.
+     */
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
-    public void decline() { this.status = false; }
+    /**
+     * Returns the status of the friendship;
+     * @return the status of the friendship.
+     */
+    public Status status() { return status; }
+
+    /**
+     * Accepts a friendship.
+     */
+    public void accept() {
+        this.status = Status.ACCEPTED;
+        this.date = LocalDateTime.now();
+    }
+
+    /**
+     * Declines a friendship.
+     */
+    public void decline() {
+        this.status = Status.DECLINED;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " , " + status.getValue() + " , " + date.format(DATEFORMATTER);
+    }
 }
