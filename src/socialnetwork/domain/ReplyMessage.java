@@ -8,11 +8,16 @@ import java.util.UUID;
 
 public class ReplyMessage extends Message{
 
-    private Message reply = null;
+    private Message reply ;
 
-    public ReplyMessage(Message reply_message, UUID id, User from, UserList to, String message, LocalDateTime date) {
-        super(reply_message.getId(), reply_message.getFrom(), reply_message.getTo(), reply_message.getMessage(), reply_message.getDate());
-        reply = new Message(id, from, to, message,date);
+    public ReplyMessage(Message reply_message, User from, UserList to, String message, LocalDateTime date) {
+        super(from, to, message, date);
+        this.reply=reply_message;
+    }
+
+    public ReplyMessage(User from, UserList to, String message, LocalDateTime date) {
+        super(from, to, message, date);
+        this.reply=null;
     }
 
     public Message getReply() {

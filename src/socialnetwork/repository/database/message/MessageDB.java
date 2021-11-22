@@ -1,10 +1,10 @@
-package socialnetwork.repository.database;
+package socialnetwork.repository.database.message;
 
 import socialnetwork.domain.Message;
 import socialnetwork.domain.User;
 import socialnetwork.domain.containers.UserList;
 import socialnetwork.domain.exceptions.FileException;
-import socialnetwork.domain.validator.UserValidator;
+import socialnetwork.repository.database.RepositoryDB;
 
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
@@ -13,37 +13,13 @@ import java.util.Map;
 import java.util.UUID;
 
 import static socialnetwork.domain.constants.Constants.*;
-import static socialnetwork.domain.constants.Constants.ID;
 
-public class MessageDB extends RepositoryDB<Message> {
+public class MessageDB extends AbstractMessageDB<Message> {
 
     public RepositoryDB<User> userRepo;
 
     public MessageDB(String url, String username, String password) {
         super(url, username, password);
-    }
-
-    /**
-     * Finds one message
-     * @param uuid the id of the message
-     * @return an Message object with that id
-     * @throws FileException in case the file doesn't exist
-     */
-    @Override
-    public Message findOne(UUID uuid) throws FileException {
-        String sql = "select * from messages where id = ?";
-        return super.findOne(uuid.toString(), sql);
-    }
-
-    /**
-     * Finds all the messages in the db
-     * @return
-     * @throws FileException
-     */
-    @Override
-    public Iterable<Message> findAll() throws FileException {
-        String sql = "select * from messages";
-        return super.findAll(sql);
     }
 
     @Override
@@ -54,12 +30,6 @@ public class MessageDB extends RepositoryDB<Message> {
         return super.save(entity, sql, attributes);
     }
 
-    @Override
-    public Message delete(UUID uuid) throws FileException {
-        String sql = "delete from messages where id = ?";
-        String[] attributes = new String[] {uuid.toString()};
-        return super.delete(uuid, sql, attributes);
-    }
 
     @Override
     public Message update(Message entity) throws FileException {

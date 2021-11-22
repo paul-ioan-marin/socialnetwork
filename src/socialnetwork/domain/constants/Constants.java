@@ -24,6 +24,7 @@ public class Constants {
     public static final String TIMESTAMP = "timestamp";
     public static final String FROM = "id_from";
     public static final String TO = "id_group_to";
+    public static final String BASEMSG = "base_message";
 
     public static DateTimeFormatter DATEFORMATTER =
             new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy[ [HH][:mm][:ss]]")

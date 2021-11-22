@@ -23,22 +23,7 @@ public class Message extends Entity<UUID> {
      * @param date When the message was sent
      */
     public Message(User from, UserList to, String message, LocalDateTime date) {
-        this.from = from;
-        this.to = to;
-        this.message = message;
-        this.date = date;
-    }
-
-    /**
-     * Constructor with id
-     * @param id the id of the message
-     * @param from The user that sent the message
-     * @param to The list of people that received the message
-     * @param message The message that was sent
-     * @param date When the message was sent
-     */
-    public Message(UUID id,User from, UserList to, String message, LocalDateTime date) {
-        this.setId(id);
+        setId(UUID.randomUUID());
         this.from = from;
         this.to = to;
         this.message = message;

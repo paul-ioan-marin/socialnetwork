@@ -73,9 +73,16 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
 
     protected abstract E getFromDB(ResultSet resultSet) throws FileException;
 
-    protected boolean contains(E entity) throws FileException {
+    public boolean contains(E entity) throws FileException {
         for (E e : this.findAll()) if (e.equals(entity)) return true;
         return false;
+    }
+
+    public boolean contains(List<E> entities) throws FileException {
+        for (E entity: entities) {
+            if(!contains(entity)){return false;}
+        }
+        return true;
     }
 
     private PreparedStatement execute(String sql, String[] attributes) throws SQLException {
