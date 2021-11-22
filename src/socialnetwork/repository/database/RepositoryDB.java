@@ -100,7 +100,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
 
     private void modifyDB(String sql, String[] attributes) throws FileException {
         try { this.execute(sql, attributes).executeUpdate(); }
-        catch (SQLException e) { throw new FileException("corrupted file"); }
+        catch (SQLException e) { System.out.println(e); }
     }
 
     protected static Map<String, String> getStringDB(ResultSet resultSet, String[] columnsArray) throws FileException {
@@ -108,7 +108,8 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         try {
             for (String column : columnsArray)
                 result.put(column, resultSet.getString(column));
-        } catch (SQLException e) { throw new FileException("corrupted file"); }
+        } catch (SQLException e) {
+            System.out.println(e);}
         return result;
     }
 }

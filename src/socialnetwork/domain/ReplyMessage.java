@@ -6,18 +6,22 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
+import static socialnetwork.domain.constants.Constants.NULLMSG;
+
 public class ReplyMessage extends Message{
 
     private Message reply ;
 
     public ReplyMessage(Message reply_message, User from, UserList to, String message, LocalDateTime date) {
         super(from, to, message, date);
-        this.reply=reply_message;
+        setId(UUID.randomUUID());
+        this.reply = reply_message;
     }
 
     public ReplyMessage(User from, UserList to, String message, LocalDateTime date) {
         super(from, to, message, date);
-        this.reply=null;
+        setId(UUID.randomUUID());
+        this.reply=NULLMSG;
     }
 
     public Message getReply() {

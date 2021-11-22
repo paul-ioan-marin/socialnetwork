@@ -30,6 +30,7 @@ public class Message extends Entity<UUID> {
         this.date = date;
     }
 
+
     @Override
     public String getFromColumn(int column) {
         return null;

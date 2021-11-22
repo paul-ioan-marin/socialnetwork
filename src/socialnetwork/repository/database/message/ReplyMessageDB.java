@@ -25,7 +25,7 @@ public class ReplyMessageDB extends AbstractMessageDB<ReplyMessage>{
     public ReplyMessage save(ReplyMessage entity) throws FileException {
         String sql = "insert into messages (id, text_message, timestamp, id_from, id_group_to, base_message) values (?, ?, ?, ?, ?, ?)";
         String[] attributes = new String[] {entity.getId().toString(),entity.getMessage(), entity.getDate().toString(),
-                entity.getFrom().getId().toString(), entity.getTo().toString()};
+                entity.getFrom().getId().toString(), entity.getTo().toString() , entity.getReply().getId().toString()};
         return super.save(entity, sql, attributes);
     }
 
