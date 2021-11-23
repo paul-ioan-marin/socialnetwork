@@ -1,0 +1,82 @@
+package socialnetwork.repository.database;
+
+import socialnetwork.domain.User;
+import socialnetwork.domain.containers.GroupMessage;
+import socialnetwork.domain.exceptions.FileException;
+import socialnetwork.domain.exceptions.ValidationException;
+import socialnetwork.domain.validator.Validator;
+
+import java.sql.ResultSet;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static socialnetwork.domain.constants.Constants.*;
+
+public class GroupRepositoryDB extends RepositoryDB<GroupMessage> {
+    private UserRepositoryDB users;
+
+    public GroupRepositoryDB(String url, String username, String password) {
+        super(url, username, password);
+        this.validator = new Validator<GroupMessage>() {
+            @Override
+            public void validate(GroupMessage entity) throws ValidationException {}
+        };
+        users = new UserRepositoryDB(url, username, password);
+    }
+
+    @Override
+    public GroupMessage findOne(UUID uuid) throws FileException, Exception {
+        String sql = "select * from groups where id = ?";
+        return super.findOne(uuid.toString(), sql);
+    }
+
+    @Override
+    public Iterable<GroupMessage> findAll() throws FileException, Exception {
+        String sql = "select * from groups";
+        return super.findAll(sql);
+    }
+
+    @Override
+    public GroupMessage save(GroupMessage group) throws FileException, Exception {
+        if (!users.contains(group.getMembers())) return null;
+        String sql = "insert into groups (id, users_group) values (?, ?)";
+        String[] attributes = new String[] {group.getId().toString(), group.toString()};
+        return super.save(group, sql, attributes);
+    }
+
+    @Override
+    public GroupMessage delete(UUID uuid) throws FileException, Exception {
+        String sql = "delete from groups where id = ?";
+        String[] attributes = new String[] {uuid.toString()};
+        return super.delete(uuid, sql, attributes);
+    }
+
+    @Override
+    public GroupMessage update(GroupMessage entity) throws FileException, Exception {
+        if (!users.contains(entity.getMembers())) return null;
+        String sql = "update groups set users_group = ? where id = ?";
+        String[] attributes = new String[] {entity.toString(), entity.getId().toString()};
+        return super.update(entity, sql, attributes);
+    }
+
+    public List<User> parse(String string) throws Exception {
+        return Arrays.stream(string.split(",")).map(value -> {
+            try {
+                return users.findOne(UUID.fromString(value));
+            } catch (Exception ignored) {
+                return null;
+            }
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    protected GroupMessage getFromDB(ResultSet resultSet) throws FileException, Exception {
+        Map<String, String> fromDB = RepositoryDB.getStringDB(resultSet, new String[]{ID, GROUPS});
+        GroupMessage result = new GroupMessage(parse(fromDB.get(GROUPS)));
+        result.setId(UUID.fromString(fromDB.get(ID)));
+        return result;
+    }
+}

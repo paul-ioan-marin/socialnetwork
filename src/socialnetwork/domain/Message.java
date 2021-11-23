@@ -1,17 +1,20 @@
 package socialnetwork.domain;
 
 import socialnetwork.domain.User;
+import socialnetwork.domain.containers.GroupMessage;
 import socialnetwork.domain.containers.UserList;
 import socialnetwork.domain.primary.Entity;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
+
 
 public class Message extends Entity<UUID> {
 
     private User from;
-    private UserList to;
+    private GroupMessage to;
     private String message;
     private LocalDateTime date;
 
@@ -22,7 +25,7 @@ public class Message extends Entity<UUID> {
      * @param message The message that was sent
      * @param date When the message was sent
      */
-    public Message(User from, UserList to, String message, LocalDateTime date) {
+    public Message(User from, GroupMessage to, String message, LocalDateTime date) {
         setId(UUID.randomUUID());
         this.from = from;
         this.to = to;
@@ -40,16 +43,14 @@ public class Message extends Entity<UUID> {
         return from;
     }
 
+    public List<User> getTo() {
+        return to.everyoneBut(from);
+    }
+
+    public GroupMessage getGroup() { return to; }
+
     public void setFrom(User from) {
         this.from = from;
-    }
-
-    public UserList getTo() {
-        return to;
-    }
-
-    public void setTo(UserList to) {
-        this.to = to;
     }
 
     public String getMessage() {

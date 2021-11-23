@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.UUID;
 
+
 public class Constants {
     public static final String ALPHABET_VALIDATOR = "[a-zA-Z]+";
     public static final String EMAIL_VALIDATOR = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
@@ -28,8 +29,9 @@ public class Constants {
     public static final String FROM = "id_from";
     public static final String TO = "id_group_to";
     public static final String BASEMSG = "base_message";
-    public static final Message NULLMSG = NullMsg();
+    public static final String GROUPS = "users_group";
 
+    public static final Message NULLMSG = NullMsg();
     public static Message NullMsg(){
         Message aux = new Message(null,null, null, NULLDATE);
         aux.setId(UUID.fromString("00000000-0000-0000-0000-00000000000"));

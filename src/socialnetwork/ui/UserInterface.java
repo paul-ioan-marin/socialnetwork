@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 import static socialnetwork.domain.constants.PersonalConstants.*;
 
+
 public class UserInterface {
     private Service service;
     public UserInterface() {}
@@ -72,7 +73,7 @@ public class UserInterface {
      * @throws FileException if file is invalid;
 
      */
-    public void addUser() throws InputException, FileException, RepositoryException {
+    public void addUser() throws Exception, FileException, RepositoryException {
         System.out.println("Introduce email, first name and second name, separated by space: ");
         List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
         if (attributes.size() != 3)
@@ -86,7 +87,7 @@ public class UserInterface {
      * @throws FileException if file is invalid;
      * @throws RepositoryException if user does not exist.
      */
-    public void deleteUser() throws FileException, RepositoryException {
+    public void deleteUser() throws Exception, RepositoryException {
         System.out.println("Introduce email: ");
         String attribute =(new Scanner(System.in)).nextLine();
         service.deleteUser(attribute);
@@ -99,7 +100,7 @@ public class UserInterface {
      * @throws FileException if file is invalid;
      * @throws RepositoryException if user does not exist.
      */
-    public void updateUser() throws InputException, FileException, RepositoryException {
+    public void updateUser() throws Exception, FileException, RepositoryException {
         System.out.println("Introduce email, first name and second name, separated by space: ");
         List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
         if (attributes.size() != 3)
@@ -114,7 +115,7 @@ public class UserInterface {
      * @throws FileException if file is invalid;
      * @throws RepositoryException if friendship exists.
      */
-    public void addFriendship() throws InputException, FileException, RepositoryException {
+    public void addFriendship() throws Exception, FileException, RepositoryException {
         System.out.println("Introduce first and second email, separated by space: ");
         List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
         if (attributes.size() != 2)
@@ -129,7 +130,7 @@ public class UserInterface {
      * @throws FileException if file is invalid;
      * @throws RepositoryException if friendship does not exits.
      */
-    public void deleteFriendship() throws InputException, FileException, RepositoryException {
+    public void deleteFriendship() throws Exception, FileException, RepositoryException {
         System.out.println("Introduce first and second email, separated by space: ");
         List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
         if (attributes.size() != 2)
@@ -144,7 +145,7 @@ public class UserInterface {
      * @throws FileException if file is invalid;
      * @throws RepositoryException if friendship does not exits.
      */
-    public void updateFriendship() throws InputException, FileException, RepositoryException {
+    public void updateFriendship() throws Exception, FileException, RepositoryException {
         System.out.println("Introduce first, second, third and fourth email, separated by space: ");
         List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
         if (attributes.size() != 4)
@@ -156,7 +157,7 @@ public class UserInterface {
     /**
      * Shows the friendships and users.
      */
-    public void showEverything() throws FileException, RepositoryException {
+    public void showEverything() throws Exception, RepositoryException {
         System.out.println("Users:");
         for (User user : service.getUsers())
             System.out.println(user.toString());
