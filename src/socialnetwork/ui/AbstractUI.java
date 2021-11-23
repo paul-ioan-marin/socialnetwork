@@ -33,7 +33,7 @@ public class AbstractUI {
             if (email.equals("admin")) ui = new AdministratorUI(this);
             else if (service.findUserByEmail(email) != null) ui = new UserUI(this, service.findUserByEmail(email));
             if (ui != null) {
-                System.out.println("Welcome " + email + "!");
+                System.out.println("Welcome " + ui.name() + "!");
                 ui.run();
                 return;
             }
@@ -54,4 +54,6 @@ throw e;
      * @return the input;
      */
     protected String input() { return null; }
+
+    public String name() { return null; }
 }

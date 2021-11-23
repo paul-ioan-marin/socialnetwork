@@ -17,6 +17,9 @@ public class AdministratorUI extends AbstractUI {
     }
 
     @Override
+    public String name() { return "admin"; }
+
+    @Override
     public void run() throws Exception {
         try {
             String input = "";

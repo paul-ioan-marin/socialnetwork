@@ -28,7 +28,7 @@ public class GroupRepositoryDB extends RepositoryDB<GroupMessage> {
     @Override
     public GroupMessage findOne(UUID uuid) throws FileException, Exception {
         String sql = "select * from groups where id = ?";
-        return super.findOne(uuid.toString(), sql);
+        return super.findOne(sql, uuid.toString());
     }
 
     @Override

@@ -43,7 +43,8 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
                 return entity;
             }
         } catch (SQLException e) {
-            System.out.println(e); }
+            throw e;}
+            //System.out.println(e); }
         return null;
     }
 
@@ -64,7 +65,8 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
                 entities.add(entity);
             }
         } catch (SQLException e) {
-            System.out.println(e); }
+            throw e;}
+            // System.out.println(e); }
         return entities;
     }
 

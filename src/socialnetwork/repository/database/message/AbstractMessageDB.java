@@ -26,7 +26,7 @@ public abstract class AbstractMessageDB<E extends Message> extends RepositoryDB<
     @Override
     public E findOne(UUID uuid) throws FileException, Exception {
         String sql = "select * from messages where id = ?";
-        return super.findOne(uuid.toString(), sql);
+        return super.findOne(sql, uuid.toString());
     }
 
 

@@ -26,16 +26,22 @@ public class ReplyMessageDB extends AbstractMessageDB<ReplyMessage>{
     @Override
     public ReplyMessage save(ReplyMessage entity) throws FileException, Exception {
         String sql = "insert into messages (id, text_message, timestamp, id_from, id_group_to, base_message) values (?, ?, ?, ?, ?, ?)";
+        String reply;
+        if (entity.getReply() == null) reply = null;
+        else reply = entity.getReply().getId().toString();
         String[] attributes = new String[] {entity.getId().toString(),entity.getMessage(), entity.getDate().format(DATEFORMATTER),
-                entity.getFrom().getId().toString(), entity.getGroup().getId().toString(), entity.getReply().getId().toString()};
+                entity.getFrom().getId().toString(), entity.getGroup().getId().toString(), reply};
         return super.save(entity, sql, attributes);
     }
 
     @Override
     public ReplyMessage update(ReplyMessage entity) throws FileException, Exception {
         String sql = "update messages set text_message = ?, timestamp = ?, id_from = ?, id_group_to = ?, base_message= ? where id = ?";
+        String reply;
+        if (entity.getReply() == null) reply = null;
+        else reply = entity.getReply().getId().toString();
         String[] attributes = new String[] {entity.getMessage(), entity.getDate().format(DATEFORMATTER),
-                entity.getFrom().getId().toString(), entity.getGroup().getId().toString(),entity.getReply().getId().toString(), entity.getId().toString()};
+                entity.getFrom().getId().toString(), entity.getGroup().getId().toString(), reply, entity.getId().toString()};
         return super.update(entity, sql, attributes);
     }
 
@@ -46,7 +52,9 @@ public class ReplyMessageDB extends AbstractMessageDB<ReplyMessage>{
         LocalDateTime timestamp = LocalDateTime.parse(fromDB.get(TIMESTAMP),DATEFORMATTER);
         User from = userRepo.findOne(UUID.fromString(fromDB.get(FROM)));
         GroupMessage to = groupRepo.findOne(UUID.fromString(fromDB.get(TO)));
-        Message basetext = findOne(UUID.fromString(fromDB.get(BASEMSG)));
+        ReplyMessage basetext;
+        if (fromDB.get(BASEMSG) != null) basetext = findOne(UUID.fromString(fromDB.get(BASEMSG)));
+        else basetext = null;
         ReplyMessage result = new ReplyMessage(basetext, from, to, text_message, timestamp);
         result.setId(UUID.fromString(fromDB.get(ID)));
         return result;
