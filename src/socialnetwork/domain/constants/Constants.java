@@ -28,8 +28,9 @@ public class Constants {
     public static final String FROM = "id_from";
     public static final String TO = "id_group_to";
     public static final String BASEMSG = "base_message";
-    public static final Message NULLMSG = NullMsg();
+    public static final String GROUPS = "users_group";
 
+    public static final Message NULLMSG = NullMsg();
     public static Message NullMsg(){
         Message aux = new Message(null,null, null, NULLDATE);
         aux.setId(UUID.fromString("00000000-0000-0000-0000-00000000000"));

@@ -2,6 +2,7 @@ package socialnetwork.repository.database.message;
 
 import socialnetwork.domain.Message;
 import socialnetwork.domain.User;
+import socialnetwork.domain.containers.GroupMessage;
 import socialnetwork.domain.containers.UserList;
 import socialnetwork.domain.exceptions.FileException;
 import socialnetwork.repository.database.RepositoryDB;
@@ -23,8 +24,8 @@ public class MessageDB extends AbstractMessageDB<Message> {
     }
 
     @Override
-    public Message save(Message entity) throws FileException {
-        String sql = "insert into messages (id, text_message, timestamp, id_from, id_group_to ) values (?, ?, ?, ?)";
+    public Message save(Message entity) throws FileException, Exception {
+        String sql = "insert into messages (id, text_message, timestamp, id_from, id_group ) values (?, ?, ?, ?)";
         String[] attributes = new String[] {entity.getId().toString(),entity.getMessage(), entity.getDate().toString(),
                 entity.getFrom().getId().toString(), entity.getTo().toString()};
         return super.save(entity, sql, attributes);
@@ -32,15 +33,15 @@ public class MessageDB extends AbstractMessageDB<Message> {
 
 
     @Override
-    public Message update(Message entity) throws FileException {
-        String sql = "update messages set text_message = ?, timestamp = ?, id_from = ?, id_group_to = ? where id = ?";
+    public Message update(Message entity) throws FileException, Exception {
+        String sql = "update messages set text_message = ?, timestamp = ?, id_from = ?, id_group = ? where id = ?";
         String[] attributes = new String[] {entity.getMessage(), entity.getDate().toString(),
                 entity.getFrom().getId().toString(), entity.getTo().toString(),entity.getId().toString()};
         return super.update(entity, sql, attributes);
     }
 
     @Override
-    protected Message getFromDB(ResultSet resultSet) throws FileException {
+    protected Message getFromDB(ResultSet resultSet) throws FileException, Exception {
         Map<String, String> fromDB = RepositoryDB.getStringDB(resultSet, new String[]{ID, TEXTMSG, TIMESTAMP, FROM , TO});
         User from = userRepo.findOne(UUID.fromString(fromDB.get(FROM)));
         UserList list_users = new UserList();
@@ -50,7 +51,7 @@ public class MessageDB extends AbstractMessageDB<Message> {
         }
         String text_message = fromDB.get(TEXTMSG);
         LocalDateTime timestamp = LocalDateTime.parse(fromDB.get(TIMESTAMP),DATEFORMATTER);
-        Message result = new Message(from, list_users,text_message,timestamp);
+        Message result = new Message(from, new GroupMessage(list_users),text_message,timestamp);
         result.setId(UUID.fromString(fromDB.get(ID)));
         return result;
     }

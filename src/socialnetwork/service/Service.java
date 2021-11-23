@@ -15,7 +15,7 @@ public class Service {
     private final FriendshipRepositoryDB friendships;
     private final UserRepositoryDB users;
 
-    public Service(String url, String username, String password) throws FileException {
+    public Service(String url, String username, String password) throws Exception {
         this.friendships = new FriendshipRepositoryDB(url, username, password);
         users = this.friendships.getUsers();
     }
@@ -23,14 +23,14 @@ public class Service {
     /**
      * @return the friendships in the network.
      */
-    public Iterable<Friendship> getFriendships() throws FileException {
+    public Iterable<Friendship> getFriendships() throws Exception {
         return this.friendships.findAll();
     }
 
     /**
      * @return the users in the network.
      */
-    public Iterable<User> getUsers() throws FileException {
+    public Iterable<User> getUsers() throws Exception {
         //Set<User> users = new HashSet<>();
         //for (User user : this.users.findAll()) {
         //    users.add(user);
@@ -53,7 +53,7 @@ public class Service {
      * @throws FileException if the file is invalid;
      * @throws RepositoryException if the email exists.
      */
-    public void addUser(String email, String firstName, String lastName) throws FileException, RepositoryException {
+    public void addUser(String email, String firstName, String lastName) throws Exception {
         User user = users.save(new User(email, firstName, lastName));
         if (user == null) throw new RepositoryException("the email already exists");
     }
@@ -64,7 +64,7 @@ public class Service {
      * @throws FileException if the file is invalid;
      * @throws RepositoryException if the email does not exist.
      */
-    public void deleteUser(String email) throws FileException, RepositoryException {
+    public void deleteUser(String email) throws Exception {
         User user = users.findByEmail(email);
         if (user == null)
             throw new RepositoryException("the email does not exits");
@@ -86,7 +86,7 @@ public class Service {
      * @throws FileException if the file is invalid;
      * @throws RepositoryException if the email does not exist.
      */
-    public void updateUser(String email, String firstName, String lastName) throws FileException, RepositoryException {
+    public void updateUser(String email, String firstName, String lastName) throws Exception {
         User user = friendships.getUsers().findByEmail(email);
         if (user == null)
             throw new RepositoryException("the email does not exist");
@@ -103,7 +103,7 @@ public class Service {
      * @throws FileException if the file is invalid;
      * @throws RepositoryException if the friendship exists.
      */
-    public void addFriendship(String email1, String email2) throws FileException, RepositoryException {
+    public void addFriendship(String email1, String email2) throws Exception {
         if (users.findByEmail(email1) == null)
             throw new RepositoryException("none of the users has one of the emails");
         if (users.findByEmail(email2) == null)
@@ -119,7 +119,7 @@ public class Service {
      * @throws FileException if the file is invalid;
      * @throws RepositoryException if the friendship does not exist.
      */
-    public void deleteFriendship(String email1, String email2) throws FileException, RepositoryException {
+    public void deleteFriendship(String email1, String email2) throws Exception {
         if (users.findByEmail(email1) == null || users.findByEmail(email2) == null)
             throw new RepositoryException("none of the users has one of the emails");
         Friendship friendship = new Friendship(users.findByEmail(email1), users.findByEmail(email2));
@@ -139,7 +139,7 @@ public class Service {
      * @throws FileException if the file is invalid;
      * @throws RepositoryException if the friendship does not exist.
      */
-    public void updateFriendship(String email1, String email2, String email3, String email4) throws FileException, RepositoryException {
+    public void updateFriendship(String email1, String email2, String email3, String email4) throws Exception, RepositoryException {
         if (users.findByEmail(email1) == null)
             throw new RepositoryException("none of the users has one of the emails");
         if (users.findByEmail(email2) == null)

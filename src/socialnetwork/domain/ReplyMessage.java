@@ -1,5 +1,6 @@
 package socialnetwork.domain;
 
+import socialnetwork.domain.containers.GroupMessage;
 import socialnetwork.domain.containers.UserList;
 
 import java.time.LocalDateTime;
@@ -12,16 +13,16 @@ public class ReplyMessage extends Message{
 
     private Message reply ;
 
-    public ReplyMessage(Message reply_message, User from, UserList to, String message, LocalDateTime date) {
+    public ReplyMessage(Message reply_message, User from, GroupMessage to, String message, LocalDateTime date) {
         super(from, to, message, date);
         setId(UUID.randomUUID());
         this.reply = reply_message;
     }
 
-    public ReplyMessage(User from, UserList to, String message, LocalDateTime date) {
+    public ReplyMessage(User from, GroupMessage to, String message, LocalDateTime date) {
         super(from, to, message, date);
         setId(UUID.randomUUID());
-        this.reply=NULLMSG;
+        this.reply= NULLMSG;
     }
 
     public Message getReply() {
