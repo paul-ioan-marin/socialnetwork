@@ -5,7 +5,10 @@ import socialnetwork.domain.util.SpecificList;
 import socialnetwork.domain.exceptions.InputException;
 import socialnetwork.service.UserService;
 
+import java.sql.SQLOutput;
+import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 import static socialnetwork.domain.constants.Constants.DATEFORMATTER;
 
@@ -35,6 +38,8 @@ public class UserUI extends AbstractUI {
                         case "4": deleteFriend(); break;
                         case "5": acceptedFriendships(); break;
                         case "6": pendingFriendships(); break;
+                        case "7": sendMessage(); break;
+                        case "8": messagesWith(); break;
                         default: throw new InputException("Invalid input");
                     }
                 } catch (Exception e) {
@@ -59,6 +64,8 @@ throw e;
         System.out.println("4 - Delete a friend");
         System.out.println("5 - Show friends");
         System.out.println("6 - Show pending list");
+        System.out.println("7 - Send a message");
+        System.out.println("8 - Show a conversation");
         System.out.println("0 - Logout");
         System.out.println("Introduce one of the numbers:");
         return (new Scanner(System.in)).nextLine();
@@ -130,5 +137,32 @@ throw e;
         showList(this.service::pendingFriendships);
     }
 
+    private void sendMessage() throws Exception {
+        System.out.println("Introduce receivers' emails separated only by comma!");
+        System.out.println("Introduce - if you don't want this message to be a reply");
+        System.out.println("Introduce receivers' emails and the base text id separated by space:");
+        List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
+        if (attributes.size() != 2)
+            throw new InputException("Wrong inputs");
+        System.out.println("Introduce the message:");
+        String text = new Scanner(System.in).nextLine();
+        service.sendMessage(attributes.get(0), text ,attributes.get(1));
+        System.out.println("Message sent");
+    }
 
+    private void messagesWith() throws Exception {
+        System.out.println("Introduce the email:");
+        String email = (new Scanner(System.in)).nextLine();
+        service.messagesWith(email).forEach(message -> {
+        if (message.getFrom().equals(user)) {
+            if (message.getReply() != null)
+                System.out.println("   Reply at: " + message.getReply().getMessage());
+            System.out.println(message.getDate().format(DATEFORMATTER) + " " + message.getMessage());
+        } else {
+            if (message.getReply() != null)
+                System.out.println("                     Reply at: " + message.getReply().getMessage());
+            System.out.println("                  " + message.getDate().format(DATEFORMATTER) + " " + message.getMessage());
+        }
+        });
+    }
 }

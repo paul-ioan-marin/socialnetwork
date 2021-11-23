@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static socialnetwork.domain.constants.Constants.DATEFORMATTER;
-import static socialnetwork.domain.constants.Constants.NULLMSG;
 
 public class ReplyMessage extends Message{
 
@@ -21,7 +20,7 @@ public class ReplyMessage extends Message{
     public ReplyMessage(User from, GroupMessage to, String message, LocalDateTime date) {
         super(from, to, message, date);
         setId(UUID.randomUUID());
-        this.reply= NULLMSG;
+        this.reply = null;
     }
 
     public Message getReply() {

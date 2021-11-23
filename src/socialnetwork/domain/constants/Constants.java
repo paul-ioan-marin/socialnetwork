@@ -1,6 +1,6 @@
 package socialnetwork.domain.constants;
 
-import socialnetwork.domain.Message;
+import socialnetwork.domain.ReplyMessage;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -49,9 +49,9 @@ public class Constants {
     public static final String BASEMSG = "base_message";
     public static final String GROUPS = "users_group";
 
-    public static final Message NULLMSG = null_message();
-    private static Message null_message(){
-        Message aux = new Message(null,null, null, NULLDATE);
+    public static final ReplyMessage NULLMSG = null_message();
+    private static ReplyMessage null_message(){
+        ReplyMessage aux = new ReplyMessage(null,null, null, NULLDATE);
         aux.setId(UUID.fromString("00000000-0000-0000-0000-00000000000"));
         return aux;
     }

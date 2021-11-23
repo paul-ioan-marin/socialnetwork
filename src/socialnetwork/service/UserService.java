@@ -10,6 +10,7 @@ import socialnetwork.domain.exceptions.RepositoryException;
 import socialnetwork.domain.util.*;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -115,6 +116,7 @@ public class UserService extends AbstractService {
                     try {
                         return message.getFrom().equals(user) || message.getFrom().equals(this.users.findByEmail(email));
                     } catch (Exception ignored) {} return false;})
+                .sorted(Collections.reverseOrder((m1, m2) -> m2.getDate().compareTo(m1.getDate())))
                 .collect(Collectors.toList());
     }
 }
