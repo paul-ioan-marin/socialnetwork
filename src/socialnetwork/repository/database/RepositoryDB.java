@@ -21,7 +21,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         this.password = password;
     }
 
-    protected E findOne(String value, String sql) throws IdException, FileException {
+    protected E findOne(String value, String sql) throws IdException, FileException, Exception {
         if (value == null) throw new IdException("value must not be null");
         try {
             ResultSet resultSet = this.executeQuery(sql, new String[] {value});
@@ -34,7 +34,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return null;
     }
 
-    protected Iterable<E> findAll(String sql) throws FileException {
+    protected Iterable<E> findAll(String sql) throws Exception {
         Set<E> entities = new HashSet<>();
         try {
             ResultSet resultSet = this.executeQuery(sql, new String[] {});
@@ -47,7 +47,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return entities;
     }
 
-    protected E save(E entity, String sql, String[] attributes) throws IdException, FileException {
+    protected E save(E entity, String sql, String[] attributes) throws IdException, FileException, Exception {
         if (entity == null) throw new IdException("entity must not be null");
         if(this.contains(entity)) return null;
         validator.validate(entity);
@@ -55,7 +55,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return entity;
     }
 
-    protected E delete(UUID uuid, String sql, String[] attributes) throws IdException, FileException {
+    protected E delete(UUID uuid, String sql, String[] attributes) throws IdException, FileException, Exception {
         if (uuid == null) throw new IdException("id must not be null");
         E entity = findOne(uuid);
         if (entity == null) return null;
@@ -63,7 +63,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return entity;
     }
 
-    protected E update(E entity, String sql, String[] attributes) throws IdException, FileException {
+    protected E update(E entity, String sql, String[] attributes) throws IdException, FileException, Exception {
         if (entity == null) throw new IdException("entity must not be null");
         if (findOne(entity.getId()) == null) return null;
         validator.validate(entity);
@@ -71,14 +71,14 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return entity;
     }
 
-    protected abstract E getFromDB(ResultSet resultSet) throws FileException;
+    protected abstract E getFromDB(ResultSet resultSet) throws FileException, Exception;
 
-    public boolean contains(E entity) throws FileException {
+    public boolean contains(E entity) throws FileException, Exception {
         for (E e : this.findAll()) if (e.equals(entity)) return true;
         return false;
     }
 
-    public boolean contains(List<E> entities) throws FileException {
+    public boolean contains(List<E> entities) throws FileException, Exception {
         for (E entity: entities) {
             if(!contains(entity)){return false;}
         }
@@ -98,18 +98,21 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
         return this.execute(sql, attributes).executeQuery();
     }
 
-    private void modifyDB(String sql, String[] attributes) throws FileException {
+    private void modifyDB(String sql, String[] attributes) throws FileException, Exception {
         try { this.execute(sql, attributes).executeUpdate(); }
-        catch (SQLException e) { System.out.println(e); }
+        catch (SQLException e) {
+            throw e;}
+            //System.out.println(e); }
     }
 
-    protected static Map<String, String> getStringDB(ResultSet resultSet, String[] columnsArray) throws FileException {
+    protected static Map<String, String> getStringDB(ResultSet resultSet, String[] columnsArray) throws FileException, Exception {
         Map<String, String> result = new HashMap<>();
         try {
             for (String column : columnsArray)
                 result.put(column, resultSet.getString(column));
         } catch (SQLException e) {
-            System.out.println(e);}
+            throw e;}
+            //System.out.println(e);}
         return result;
     }
 }

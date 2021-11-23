@@ -20,12 +20,12 @@ public interface Repository<ID, E extends Entity<ID>> {
      * @return an encapsulating the entity with the given id;
      * @throws IllegalArgumentException if id is null.
      */
-    E findOne(ID id) throws FileException;
+    E findOne(ID id) throws FileException, Exception;
 
     /**
      * @return all entities.
      */
-    Iterable<E> findAll() throws FileException;
+    Iterable<E> findAll() throws FileException, Exception;
 
     /**
      * Saves the entity;
@@ -38,7 +38,7 @@ public interface Repository<ID, E extends Entity<ID>> {
      * @throws IllegalArgumentException if the given entity is null;
      * @throws ValidationException      if the entity is not valid.
      */
-    E save(E entity) throws FileException;
+    E save(E entity) throws FileException, Exception;
 
     /**
      * Removes the entity with the given id;
@@ -50,7 +50,7 @@ public interface Repository<ID, E extends Entity<ID>> {
      * - otherwise, the removed entity;
      * @throws IllegalArgumentException if the given id is null.
      */
-    E delete(ID id) throws FileException;
+    E delete(ID id) throws FileException, Exception;
 
     /**
      * Updates an entity with another;
@@ -60,5 +60,5 @@ public interface Repository<ID, E extends Entity<ID>> {
      * @throws IllegalArgumentException if the entity is null;
      * @throws ValidationException      if the entity is not valid;
      */
-    E update(E entity) throws FileException;
+    E update(E entity) throws FileException, Exception;
 }
