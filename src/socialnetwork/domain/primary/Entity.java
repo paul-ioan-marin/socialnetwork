@@ -18,8 +18,6 @@ public abstract class Entity<ID> {
         this.id = id;
     }
 
-    public abstract String getFromColumn(int column);
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

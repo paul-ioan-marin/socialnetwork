@@ -25,7 +25,7 @@ public class MessageDB extends AbstractMessageDB<Message> {
 
     @Override
     public Message save(Message entity) throws FileException, Exception {
-        String sql = "insert into messages (id, text_message, timestamp, id_from, id_group ) values (?, ?, ?, ?)";
+        String sql = "insert into messages (id, text_message, timestamp, id_from, id_group_to ) values (?, ?, ?, ?)";
         String[] attributes = new String[] {entity.getId().toString(),entity.getMessage(), entity.getDate().toString(),
                 entity.getFrom().getId().toString(), entity.getTo().toString()};
         return super.save(entity, sql, attributes);
@@ -34,7 +34,7 @@ public class MessageDB extends AbstractMessageDB<Message> {
 
     @Override
     public Message update(Message entity) throws FileException, Exception {
-        String sql = "update messages set text_message = ?, timestamp = ?, id_from = ?, id_group = ? where id = ?";
+        String sql = "update messages set text_message = ?, timestamp = ?, id_from = ?, id_group_to = ? where id = ?";
         String[] attributes = new String[] {entity.getMessage(), entity.getDate().toString(),
                 entity.getFrom().getId().toString(), entity.getTo().toString(),entity.getId().toString()};
         return super.update(entity, sql, attributes);

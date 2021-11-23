@@ -1,23 +1,35 @@
 package socialnetwork.service;
 
 import socialnetwork.domain.Friendship;
+import socialnetwork.domain.ReplyMessage;
 import socialnetwork.domain.User;
+import socialnetwork.domain.constants.Constants;
+import socialnetwork.domain.containers.GroupMessage;
+import socialnetwork.domain.containers.UserList;
 import socialnetwork.domain.exceptions.FileException;
 import socialnetwork.domain.exceptions.RepositoryException;
 import socialnetwork.repository.database.FriendshipRepositoryDB;
+import socialnetwork.repository.database.GroupRepositoryDB;
 import socialnetwork.repository.database.UserRepositoryDB;
+import socialnetwork.repository.database.message.ReplyMessageDB;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class Service {
     private final FriendshipRepositoryDB friendships;
     private final UserRepositoryDB users;
+    private final ReplyMessageDB messages;
+    private final GroupRepositoryDB groups;
 
     public Service(String url, String username, String password) throws Exception {
         this.friendships = new FriendshipRepositoryDB(url, username, password);
-        users = this.friendships.getUsers();
+        this.users = new UserRepositoryDB(url, username, password);
+        this.messages = new ReplyMessageDB(url, username, password);
+        this.groups = new GroupRepositoryDB(url, username, password);
     }
 
     /**
@@ -152,5 +164,36 @@ public class Service {
         friendship.setLeft(friendships.getUsers().findByEmail(email3));
         friendship.setRight(friendships.getUsers().findByEmail(email4));
         friendships.update(friendship);
+    }
+
+    public void sendMessage(String email_from, String emails_to, String text, String reply_uuid) throws Exception {
+        User from = users.findByEmail(email_from);
+        if (from == null) throw new Exception("error");
+        GroupMessage to_group = new GroupMessage(Stream.concat(groups.parseByEmail(emails_to).stream(),
+                Stream.of(from)).collect(Collectors.toList()));
+        for (GroupMessage i : groups.findAll())
+            if (to_group.equals(i)) {
+                to_group.setId(i.getId());
+            }
+        groups.save(to_group);
+        ReplyMessage message;
+        if (reply_uuid.equals("-")) message = new ReplyMessage(from, to_group, text, LocalDateTime.now());
+        else message = new ReplyMessage(messages.findOne(UUID.fromString(reply_uuid)), from, to_group, text, LocalDateTime.now());
+        messages.save(message);
+    }
+
+    public List<ReplyMessage> messagesBetween(String email1, String email2) throws Exception {
+        return StreamSupport.stream(this.messages.findAll().spliterator(), false)
+                .filter(message -> {
+                    try {
+                        return message.getGroup().getMembers().contains(this.users.findByEmail(email1)) &&
+                                message.getGroup().getMembers().contains(this.users.findByEmail(email2));
+                    } catch (Exception ignored) {} return false;})
+                .filter(message -> {
+                    try {
+                        return message.getFrom().equals(this.users.findByEmail(email1)) ||
+                                message.getFrom().equals(this.users.findByEmail(email2));
+                    } catch (Exception ignored) {} return false;})
+                .collect(Collectors.toList());
     }
 }

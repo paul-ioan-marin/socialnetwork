@@ -24,16 +24,16 @@ public class ReplyMessageDB extends AbstractMessageDB<ReplyMessage>{
 
     @Override
     public ReplyMessage save(ReplyMessage entity) throws FileException, Exception {
-        String sql = "insert into messages (id, text_message, timestamp, id_from, id_group, base_message) values (?, ?, ?, ?, ?, ?)";
-        String[] attributes = new String[] {entity.getId().toString(),entity.getMessage(), entity.getDate().toString(),
+        String sql = "insert into messages (id, text_message, timestamp, id_from, id_group_to, base_message) values (?, ?, ?, ?, ?, ?)";
+        String[] attributes = new String[] {entity.getId().toString(),entity.getMessage(), entity.getDate().format(DATEFORMATTER),
                 entity.getFrom().getId().toString(), entity.getGroup().getId().toString(), entity.getReply().getId().toString()};
         return super.save(entity, sql, attributes);
     }
 
     @Override
     public ReplyMessage update(ReplyMessage entity) throws FileException, Exception {
-        String sql = "update messages set text_message = ?, timestamp = ?, id_from = ?, id_group = ?, base_message= ? where id = ?";
-        String[] attributes = new String[] {entity.getMessage(), entity.getDate().toString(),
+        String sql = "update messages set text_message = ?, timestamp = ?, id_from = ?, id_group_to = ?, base_message= ? where id = ?";
+        String[] attributes = new String[] {entity.getMessage(), entity.getDate().format(DATEFORMATTER),
                 entity.getFrom().getId().toString(), entity.getGroup().getId().toString(),entity.getReply().getId().toString(), entity.getId().toString()};
         return super.update(entity, sql, attributes);
     }

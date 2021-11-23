@@ -37,11 +37,6 @@ public class GroupMessage extends Entity<UUID> {
     }
 
     @Override
-    public String getFromColumn(int column) {
-        return null;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

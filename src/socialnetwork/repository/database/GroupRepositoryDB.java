@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static socialnetwork.domain.constants.Constants.*;
@@ -58,24 +59,38 @@ public class GroupRepositoryDB extends RepositoryDB<GroupMessage> {
     public GroupMessage update(GroupMessage entity) throws FileException, Exception {
         if (!users.contains(entity.getMembers())) return null;
         String sql = "update groups set users = ? where id = ?";
-        String[] attributes = new String[] {entity.toString(), entity.getId().toString()};
+        String[] attributes = new String[]{entity.toString(), entity.getId().toString()};
         return super.update(entity, sql, attributes);
     }
 
-    public List<User> parse(String string) throws Exception {
-        return Arrays.stream(string.split(",")).map(value -> {
+    public List<User> parse(String string, Function<String, User> func) {
+        return Arrays.stream(string.split(",")).map(func).collect(Collectors.toList());
+    }
+
+    public List<User> parseByUUID(String string) throws Exception{
+        return parse(string, v -> {
             try {
-                return users.findOne(UUID.fromString(value));
-            } catch (Exception ignored) {
+                return users.findOne(UUID.fromString(v));
+            } catch (Exception e) {
                 return null;
             }
-        }).collect(Collectors.toList());
+        });
+    }
+
+    public List<User> parseByEmail(String string) throws Exception{
+        return parse(string, v -> {
+            try {
+                return users.findByEmail(v);
+            } catch (Exception e) {
+                return null;
+            }
+        });
     }
 
     @Override
     protected GroupMessage getFromDB(ResultSet resultSet) throws FileException, Exception {
         Map<String, String> fromDB = RepositoryDB.getStringDB(resultSet, new String[]{ID, GROUPS});
-        GroupMessage result = new GroupMessage(parse(fromDB.get(GROUPS)));
+        GroupMessage result = new GroupMessage(parseByUUID(fromDB.get(GROUPS)));
         result.setId(UUID.fromString(fromDB.get(ID)));
         return result;
     }

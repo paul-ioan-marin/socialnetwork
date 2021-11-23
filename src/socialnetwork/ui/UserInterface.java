@@ -10,6 +10,7 @@ import socialnetwork.service.Service;
 import java.util.List;
 import java.util.Scanner;
 
+import static socialnetwork.domain.constants.Constants.DATEFORMATTER;
 import static socialnetwork.domain.constants.PersonalConstants.*;
 
 public class UserInterface {
@@ -35,6 +36,8 @@ public class UserInterface {
                         case "5": deleteFriendship(); break;
                         case "6": updateFriendship(); break;
                         case "7": showEverything(); break;
+                        case "8": sendMessage(); break;
+                        case "9": messagesBetween(); break;
                         default: throw new InputException("Invalid input");
                     }
                 } catch (Exception e) {
@@ -163,5 +166,27 @@ public class UserInterface {
         System.out.println("\nFriendships:");
         for (Friendship friendship : service.getFriendships())
             System.out.println(friendship.toString());
+    }
+
+    public void sendMessage() throws Exception, FileException, RepositoryException {
+        System.out.println("Introduce receivers' emails separated only by comma!");
+        System.out.println("Introduce - if you don't want this message to be a reply");
+        System.out.println("Introduce sender email, receivers' emails and the base text id separated by space: ");
+        List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
+        if (attributes.size() != 3)
+            throw new InputException("Wrong inputs for emails");
+        System.out.println("Introduce the message:");
+        String text = new Scanner(System.in).nextLine();
+        service.sendMessage(attributes.get(0),attributes.get(1),text ,attributes.get(2));
+        System.out.println("Message sent");
+    }
+
+    public void messagesBetween() throws Exception {
+        System.out.println("Introduce the emails separated by space: ");
+        List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
+        if (attributes.size() != 2)
+            throw new InputException("Wrong inputs for emails");
+        service.messagesBetween(attributes.get(0),attributes.get(1)).forEach(message ->
+                System.out.println(message.getMessage() + " " + message.getDate().format(DATEFORMATTER)));
     }
 }
