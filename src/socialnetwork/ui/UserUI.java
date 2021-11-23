@@ -166,6 +166,7 @@ throw e;
                 System.out.println("                                           Reply at: " + message.getReply().getMessage());
             System.out.println("                                        "
                     + message.getDate().format(DATEFORMATTER) + " " + message.getMessage());
+
         }
         });
     }
