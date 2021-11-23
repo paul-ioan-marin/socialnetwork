@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import static socialnetwork.domain.constants.Constants.*;
 
+
 public class ReplyMessageDB extends AbstractMessageDB<ReplyMessage>{
 
     public ReplyMessageDB(String url, String username, String password) {

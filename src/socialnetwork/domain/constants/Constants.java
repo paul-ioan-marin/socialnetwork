@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.UUID;
 
+
 public class Constants {
     public static final String ALPHABET_VALIDATOR = "[a-zA-Z]+";
     public static final String EMAIL_VALIDATOR = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
@@ -30,8 +31,8 @@ public class Constants {
     public static final String BASEMSG = "base_message";
     public static final String GROUPS = "users_group";
 
-    public static final Message NULLMSG = NullMsg();
-    public static Message NullMsg(){
+    public static final Message NULLMSG = null_message();
+    private static Message null_message(){
         Message aux = new Message(null,null, null, NULLDATE);
         aux.setId(UUID.fromString("00000000-0000-0000-0000-00000000000"));
         return aux;
@@ -44,5 +45,4 @@ public class Constants {
                     .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
                     .toFormatter();
     public static LocalDateTime NULLDATE = LocalDateTime.parse("01/01/0001 00:00:00",DATEFORMATTER);
-
 }

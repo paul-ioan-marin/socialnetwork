@@ -30,7 +30,8 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
                 validator.validate(entity);
                 return entity;
             }
-        } catch (SQLException e) { throw new FileException("corrupted file"); }
+        } catch (SQLException e) {
+            System.out.println(e);; }
         return null;
     }
 
@@ -43,7 +44,8 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
                 validator.validate(entity);
                 entities.add(entity);
             }
-        } catch (SQLException e) { throw new FileException("corrupted file"); }
+        } catch (SQLException e) {
+            System.out.println(e); }
         return entities;
     }
 

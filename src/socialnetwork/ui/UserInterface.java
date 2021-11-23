@@ -13,6 +13,7 @@ import java.util.Scanner;
 import static socialnetwork.domain.constants.Constants.DATEFORMATTER;
 import static socialnetwork.domain.constants.PersonalConstants.*;
 
+
 public class UserInterface {
     private Service service;
     public UserInterface() {}

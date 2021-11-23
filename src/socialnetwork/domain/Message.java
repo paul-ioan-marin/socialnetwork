@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
+
 public class Message extends Entity<UUID> {
 
     private User from;

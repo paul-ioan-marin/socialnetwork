@@ -10,6 +10,7 @@ import java.sql.*;
 import java.util.Map;
 import java.util.UUID;
 
+
 public class UserRepositoryDB extends RepositoryDB<User> {
 
     public UserRepositoryDB(String url, String username, String password) {
