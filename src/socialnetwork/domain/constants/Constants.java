@@ -1,19 +1,16 @@
 package socialnetwork.domain.constants;
 
-import java.time.LocalDate;
+import socialnetwork.domain.Message;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
+import java.util.UUID;
 
 public class Constants {
     public static final String ALPHABET_VALIDATOR = "[a-zA-Z]+";
     public static final String EMAIL_VALIDATOR = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
-
-    public static final int ID_COLUMN = 1;
-    public static final int EMAIL_COLUMN = 2;
-    public static final int FIRSTNAME_COLUMN = 3;
-    public static final int LASTNAME_COLUMN = 4;
 
     public static final String ID = "id";
     public static final String EMAIL = "email";
@@ -27,8 +24,15 @@ public class Constants {
     public enum Status {
         ACCEPTED("accepted"), PENDING("pending"), DECLINED("declined");
         private final String text;
-        Status(String status) { text = status; }
-        public String getValue() { return text; }
+
+        Status(String status) {
+            text = status;
+        }
+
+        public String getValue() {
+            return text;
+        }
+
         public static Status fromString(String text) {
             return switch (text) {
                 case "accepted" -> Status.ACCEPTED;
@@ -37,6 +41,19 @@ public class Constants {
                 default -> throw new IllegalArgumentException("invalid status");
             };
         }
+    }
+    public static final String TEXTMSG = "text_message";
+    public static final String TIMESTAMP = "timestamp";
+    public static final String FROM = "id_from";
+    public static final String TO = "id_group_to";
+    public static final String BASEMSG = "base_message";
+    public static final String GROUPS = "users_group";
+
+    public static final Message NULLMSG = null_message();
+    private static Message null_message(){
+        Message aux = new Message(null,null, null, NULLDATE);
+        aux.setId(UUID.fromString("00000000-0000-0000-0000-00000000000"));
+        return aux;
     }
 
     public static DateTimeFormatter DATEFORMATTER =
@@ -47,3 +64,4 @@ public class Constants {
                     .toFormatter();
     public static LocalDateTime NULLDATE = LocalDateTime.parse("01/01/0001 00:00:00",DATEFORMATTER);
 }
+

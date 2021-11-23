@@ -37,7 +37,7 @@ public class FriendshipRepositoryDB extends AbstractFriendshipRepositoryDB<Frien
     }
 
     @Override
-    protected Friendship getFromDB(ResultSet resultSet) throws FileException {
+    protected Friendship getFromDB(ResultSet resultSet) throws FileException, Exception {
         Map<String, String> fromDB = RepositoryDB.getStringDB(resultSet, new String[]{ID, FRIEND1, FRIEND2});
         User user1 = users.findOne(UUID.fromString(fromDB.get(FRIEND1)));
         User user2 = users.findOne(UUID.fromString(fromDB.get(FRIEND2)));

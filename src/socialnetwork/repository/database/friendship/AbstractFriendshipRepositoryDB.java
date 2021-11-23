@@ -23,7 +23,7 @@ public abstract class AbstractFriendshipRepositoryDB<E extends Friendship> exten
     }
 
     @Override
-    public E findOne(UUID uuid) throws IdException, FileException {
+    public E findOne(UUID uuid) throws IdException, FileException, Exception {
         String sql = "select * from friendships where id = ?";
         return super.findOne(sql, uuid.toString());
     }
@@ -34,13 +34,13 @@ public abstract class AbstractFriendshipRepositoryDB<E extends Friendship> exten
      * @return an Iterable containing the friendships that user has.
      * @throws FileException if the file is not valid.
      */
-    public Iterable<E> findByFriend(UUID id) throws FileException {
+    public Iterable<E> findByFriend(UUID id) throws FileException, Exception {
         String sql = "select * from friendships where friend_1 = ? or friend_2 = ?";
         return super.findAll(sql, new String[]{id.toString(), id.toString()});
     }
 
     @Override
-    public Iterable<E> findAll() throws IdException, FileException {
+    public Iterable<E> findAll() throws IdException, FileException, Exception {
         String sql = "select * from friendships";
         return super.findAll(sql, new String[]{});
     }

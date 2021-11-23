@@ -20,12 +20,12 @@ public interface Repository<ID, E extends Entity<ID>> {
      * @return an encapsulating the entity with the given id;
      * @throws IllegalArgumentException if id is null.
      */
-    E findOne(ID id) throws FileException;
+    E findOne(ID id) throws FileException, Exception;
 
     /**
      * @return all entities.
      */
-    Iterable<E> findAll() throws FileException;
+    Iterable<E> findAll() throws FileException, Exception;
 
     /**
      * Saves the entity;

@@ -1,13 +1,19 @@
 package socialnetwork.service;
 
 import socialnetwork.domain.FriendshipWithStatus;
+import socialnetwork.domain.ReplyMessage;
 import socialnetwork.domain.User;
 import socialnetwork.domain.constants.Constants;
 import socialnetwork.domain.containers.FriendshipList;
+import socialnetwork.domain.containers.GroupMessage;
 import socialnetwork.domain.exceptions.RepositoryException;
 import socialnetwork.domain.util.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
@@ -80,5 +86,35 @@ public class UserService extends AbstractService {
                 .filter(friendship -> friendship.getRight().equals(this.user))
                 .filter(friendship -> friendship.status() == Constants.Status.PENDING)
                 .collect(Collectors.toCollection(FriendshipList::new));
+    }
+
+    @Override
+    public void sendMessage(String emails_to, String text, String reply_uuid) throws Exception {
+        GroupMessage to_group = new GroupMessage(Stream.concat(groups.parseByEmail(emails_to).stream(),
+                Stream.of(user)).collect(Collectors.toList()));
+        for (GroupMessage i : groups.findAll())
+            if (to_group.equals(i)) {
+                to_group.setId(i.getId());
+            }
+        groups.save(to_group);
+        ReplyMessage message;
+        if (reply_uuid.equals("-")) message = new ReplyMessage(user, to_group, text, LocalDateTime.now());
+        else message = new ReplyMessage(messages.findOne(UUID.fromString(reply_uuid)), user, to_group, text, LocalDateTime.now());
+        messages.save(message);
+    }
+
+    @Override
+    public List<ReplyMessage> messagesWith(String email) throws Exception {
+        return StreamSupport.stream(this.messages.findAll().spliterator(), false)
+                .filter(message -> {
+                    try {
+                        return message.getGroup().getMembers().contains(user) &&
+                                message.getGroup().getMembers().contains(this.users.findByEmail(email));
+                    } catch (Exception ignored) {} return false;})
+                .filter(message -> {
+                    try {
+                        return message.getFrom().equals(user) || message.getFrom().equals(this.users.findByEmail(email));
+                    } catch (Exception ignored) {} return false;})
+                .collect(Collectors.toList());
     }
 }

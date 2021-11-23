@@ -33,7 +33,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
      * @throws IdException if the value is null;
      * @throws FileException if the file is not valid.
      */
-    protected E findOne(String sql, String value) throws IdException, FileException {
+    protected E findOne(String sql, String value) throws IdException, FileException, Exception {
         if (value == null) throw new IdException("value must not be null");
         try {
             ResultSet resultSet = this.executeQuery(sql, new String[] {value});
@@ -42,7 +42,8 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
                 validator.validate(entity);
                 return entity;
             }
-        } catch (SQLException e) { throw new FileException("corrupted file"); }
+        } catch (SQLException e) {
+            System.out.println(e); }
         return null;
     }
 
@@ -53,7 +54,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
      * @return the entities;
      * @throws FileException if the file is not valid.
      */
-    protected Iterable<E> findAll(String sql, String[] attributes) throws FileException {
+    protected Iterable<E> findAll(String sql, String[] attributes) throws FileException, Exception {
         Set<E> entities = new HashSet<>();
         try {
             ResultSet resultSet = this.executeQuery(sql, attributes);
@@ -62,7 +63,8 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
                 validator.validate(entity);
                 entities.add(entity);
             }
-        } catch (SQLException e) { throw new FileException("corrupted file"); }
+        } catch (SQLException e) {
+            System.out.println(e); }
         return entities;
     }
 
@@ -123,7 +125,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
      * @return the entity;
      * @throws FileException if the file is not valid.
      */
-    protected abstract E getFromDB(ResultSet resultSet) throws FileException;
+    protected abstract E getFromDB(ResultSet resultSet) throws FileException, Exception;
 
     /**
      * Checks if en entity is in the given repository;
@@ -131,9 +133,18 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
      * @return true if the entity is in repository, false otherwise.
      * @throws FileException if the file is not valid.
      */
-    public boolean contains(E entity) throws FileException {
+    public boolean contains(E entity) throws FileException, Exception {
         for (E e : this.findAll()) if (e.equals(entity)) return true;
         return false;
+    }
+
+    public boolean contains(List<E> entities) throws FileException, Exception {
+        for (E entity: entities) {
+            if(!contains(entity)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -143,7 +154,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
      * @return the prepare statement;
      * @throws SQLException if the file is not valid;
      */
-    private PreparedStatement execute(String sql, String[] attributes) throws SQLException {
+    private PreparedStatement execute(String sql, String[] attributes) throws SQLException, Exception {
         Connection connection = DriverManager.getConnection(this.url, this.username, this.password);
         PreparedStatement statement = connection.prepareStatement(sql);
         for (int i = 0; i < attributes.length; i++) {
@@ -159,7 +170,7 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
      * @return the resultSet resulted;
      * @throws SQLException if the file is not valid.
      */
-    private ResultSet executeQuery(String sql, String[] attributes) throws SQLException {
+    private ResultSet executeQuery(String sql, String[] attributes) throws SQLException, Exception {
         return this.execute(sql, attributes).executeQuery();
     }
 
@@ -184,12 +195,14 @@ public abstract class RepositoryDB<E extends Entity<UUID>> implements Repository
      * @return the dictionary that contains the values in the db having column name as key;
      * @throws FileException if the file is not valid.
      */
-    protected static Map<String, String> getStringDB(ResultSet resultSet, String[] columnsArray) throws FileException {
+    protected static Map<String, String> getStringDB(ResultSet resultSet, String[] columnsArray) throws FileException, Exception {
         Map<String, String> result = new HashMap<>();
         try {
             for (String column : columnsArray)
                 result.put(column, resultSet.getString(column));
-        } catch (SQLException e) { throw new FileException("corrupted file"); }
+        } catch (SQLException e) {
+            throw e; }
+            //System.out.println(e);}
         return result;
     }
 }

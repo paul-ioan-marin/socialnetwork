@@ -21,7 +21,7 @@ public class UserRepositoryDB extends RepositoryDB<User> {
     }
 
     @Override
-    public User findOne(UUID uuid) throws IdException, FileException {
+    public User findOne(UUID uuid) throws IdException, FileException, Exception {
         String sql = "select * from users where id = ?";
         return super.findOne(sql, uuid.toString());
     }
@@ -33,13 +33,13 @@ public class UserRepositoryDB extends RepositoryDB<User> {
      * @throws IdException if the email is null;
      * @throws FileException if the file is not valid.
      */
-    public User findByEmail(String email) throws IdException, FileException {
+    public User findByEmail(String email) throws IdException, FileException, Exception {
         String sql = "select * from users where email = ?";
         return super.findOne(sql, email);
     }
 
     @Override
-    public Iterable<User> findAll() throws IdException, FileException {
+    public Iterable<User> findAll() throws IdException, FileException, Exception {
         String sql = "select * from users";
         return super.findAll(sql, new String[]{});
     }
@@ -68,7 +68,7 @@ public class UserRepositoryDB extends RepositoryDB<User> {
     }
 
     @Override
-    protected User getFromDB(ResultSet resultSet) throws FileException {
+    protected User getFromDB(ResultSet resultSet) throws FileException, Exception {
         Map<String, String> fromDB = RepositoryDB.getStringDB(resultSet, new String[]{ID, EMAIL, FNAME, LNAME});
         User result = new User(fromDB.get(EMAIL), fromDB.get(FNAME), fromDB.get(LNAME));
         result.setId(UUID.fromString(fromDB.get(ID)));

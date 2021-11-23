@@ -1,11 +1,14 @@
 package socialnetwork.service;
 
 import socialnetwork.domain.FriendshipWithStatus;
+import socialnetwork.domain.ReplyMessage;
 import socialnetwork.domain.User;
 import socialnetwork.domain.containers.FriendshipList;
 import socialnetwork.domain.exceptions.AccessException;
+import socialnetwork.repository.database.GroupRepositoryDB;
 import socialnetwork.repository.database.friendship.FriendshipStatusRepositoryDB;
 import socialnetwork.repository.database.UserRepositoryDB;
+import socialnetwork.repository.database.message.ReplyMessageDB;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,17 +20,23 @@ import static socialnetwork.domain.constants.Constants.Status.*;
  * Abstract Service.
  */
 public class AbstractService {
-    protected FriendshipStatusRepositoryDB friendships;
-    protected UserRepositoryDB users;
+    protected final FriendshipStatusRepositoryDB friendships;
+    protected final UserRepositoryDB users;
+    protected final ReplyMessageDB messages;
+    protected final GroupRepositoryDB groups;
 
     public AbstractService(String url, String username, String password) {
         this.friendships = new FriendshipStatusRepositoryDB(url, username, password);
-        users = this.friendships.getUsers();
+        this.users = new UserRepositoryDB(url, username, password);
+        this.messages = new ReplyMessageDB(url, username, password);
+        this.groups = new GroupRepositoryDB(url, username, password);
     }
 
     public AbstractService(AbstractService service) {
         this.friendships = service.friendships;
         this.users = service.users;
+        this.messages = service.messages;
+        this.groups = service.groups;
     }
 
     /**
@@ -203,6 +212,24 @@ public class AbstractService {
      * @return the pending list.
      */
     public FriendshipList pendingFriendships() throws Exception {
+        throw new AccessException("inaccessible method");
+    }
+
+    /**
+     * Sends a message to one/more users;
+     * @param emails_to the users, separated by comma;
+     * @param text the text of the message;
+     * @param reply_uuid the uuid for reply message.
+     */
+    public void sendMessage(String emails_to, String text, String reply_uuid) throws Exception {
+        throw new AccessException("inaccessible method");
+    }
+
+    /**
+     * Creates the list of messages with a given user;
+     * @param email the given user.
+     */
+    public List<ReplyMessage> messagesWith(String email) throws Exception {
         throw new AccessException("inaccessible method");
     }
 }
