@@ -4,6 +4,7 @@ import socialnetwork.domain.FriendshipWithStatus;
 import socialnetwork.domain.ReplyMessage;
 import socialnetwork.domain.User;
 import socialnetwork.domain.containers.FriendshipList;
+import socialnetwork.domain.containers.UserList;
 import socialnetwork.domain.exceptions.AccessException;
 import socialnetwork.domain.exceptions.RepositoryException;
 import socialnetwork.repository.database.GroupRepositoryDB;
@@ -112,6 +113,14 @@ public class AbstractService {
     public void register(String email, String firstName, String lastName) throws Exception {
         User user = users.save(new User(email, firstName, lastName));
         if (user == null) throw new RepositoryException("the email already exists");
+    }
+
+    public UserList itContains(String squence) throws Exception {
+        throw new AccessException("inaccessible method");
+    }
+
+    public FriendshipWithStatus isFriendWith(User other_user) throws Exception {
+        throw new AccessException("inaccessible method");
     }
 
     /**

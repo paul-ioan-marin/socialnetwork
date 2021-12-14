@@ -1,83 +1,68 @@
 package socialnetwork.gui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import socialnetwork.domain.User;
+import socialnetwork.gui.utils.Data;
+import socialnetwork.gui.utils.Window;
 import socialnetwork.service.AbstractService;
 
-public class LoginController {
+import java.io.IOException;
+import java.util.ResourceBundle;
+
+import static socialnetwork.domain.constants.PersonalConstants.*;
+
+public class LoginController implements Initializable {
     private AbstractService service;
-    private User user_app = null;
-
-    public void setService(AbstractService service) {
-        this.service = service;
-    }
-    //textfields
-    @FXML
-    TextField textFieldFirstName;
 
     @FXML
-    TextField textFieldLastName;
-
-
-    //buttons
-    @FXML
-    Button btnLogin;
+    public TextField emailField;
 
     @FXML
-    Button btnCancel;
+    private Button loginButton;
 
     @FXML
-    public void initialize() {
+    private Button cancelButton;
 
-
-        btnLogin.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(textFieldFirstName.getText().isEmpty() || textFieldLastName.getText().isEmpty()) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Warning");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Numele si prenumele nu trebuie sa fie nule!");
-                    alert.showAndWait();
-                }
-                else{
-                    try {
-                        user_app = service.findUserByEmail(textFieldFirstName.getText());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    //user_app = loginUserbyLastFirstName(textFieldFirstName.getText(),textFieldLastName.getText());
-                    if(user_app == null){
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("Warning");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Userul introdus nu exista!");
-                        alert.showAndWait();
-                        textFieldFirstName.clear();
-                        textFieldLastName.clear();
-                    }
-                    else{
-                        Stage stage = (Stage) btnLogin.getScene().getWindow();
-                        stage.close();
-                    }
-                }
-            }
-        });
-
-        btnCancel.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Stage stage = (Stage) btnCancel.getScene().getWindow();
-                stage.close();
-            }
-        });
+    @Override
+    public void initialize(java.net.URL location, ResourceBundle resources) {
+        service = new AbstractService(URL, USERNAME, PASSWORD);
     }
 
-    public User getUtilizatorAplicatie(){
-        return user_app;
+    public static void show() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("login-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Login");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            Window.ALERT(e.getMessage());
+        }
+    }
+
+    public void login() {
+        User user;
+        try {
+            user = service.findUserByEmail(emailField.getText());
+            if (user == null)
+                throw new Exception("User not found");
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            stage.close();
+            Data.logged_user = user;
+            UserController.show();
+        } catch (Exception e) {
+            Window.ALERT(e.getMessage());
+        }
+    }
+
+    public void cancel() {
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
     }
 }

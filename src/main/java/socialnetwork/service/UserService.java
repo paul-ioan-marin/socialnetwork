@@ -6,6 +6,7 @@ import socialnetwork.domain.User;
 import socialnetwork.domain.constants.Constants;
 import socialnetwork.domain.containers.FriendshipList;
 import socialnetwork.domain.containers.GroupMessage;
+import socialnetwork.domain.containers.UserList;
 import socialnetwork.domain.exceptions.RepositoryException;
 import socialnetwork.domain.util.SpecificList;
 import socialnetwork.domain.util.SpecificOperation;
@@ -13,6 +14,7 @@ import socialnetwork.domain.util.SpecificOperation;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,6 +29,21 @@ public class UserService extends AbstractService {
     public UserService(AbstractService service, User user) {
         super(service);
         this.user = user;
+    }
+
+    @Override
+    public UserList itContains(String sequence) throws Exception {
+        return StreamSupport.stream(this.users.findAll().spliterator(), false)
+                .filter(user -> user.getEmail().toLowerCase(Locale.ROOT).contains(sequence.toLowerCase(Locale.ROOT)))
+                .collect(Collectors.toCollection(UserList::new));
+    }
+
+    @Override
+    public FriendshipWithStatus isFriendWith(User other_user) throws Exception {
+        for(FriendshipWithStatus friendship : this.friendships.findAll())
+            if (friendship.isFriend(user) && friendship.isFriend(other_user) && friendship.status().equals(Constants.Status.ACCEPTED))
+                return friendship;
+        return null;
     }
 
     @Override
