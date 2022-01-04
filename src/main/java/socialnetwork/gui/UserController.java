@@ -14,9 +14,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import socialnetwork.domain.User;
-import socialnetwork.domain.containers.UserList;
 import socialnetwork.gui.utils.CellButton;
 import socialnetwork.gui.utils.Data;
+import socialnetwork.gui.utils.Window;
 import socialnetwork.service.AbstractService;
 import socialnetwork.service.UserService;
 
@@ -27,38 +27,43 @@ import static socialnetwork.domain.constants.PersonalConstants.*;
 
 public class UserController implements Initializable {
     private AbstractService service;
-    private User user;
 
     @FXML
-    protected Text welcomeText;
+    private Text welcomeText;
     @FXML
-    protected TextField search;
+    private TextField search;
 
     @FXML
     private TableView<User> table;
     @FXML
-    protected TableColumn<User, String> emailColumn;
+    private TableColumn<User, String> emailColumn;
     @FXML
-    protected TableColumn<User, Button> buttonColumn;
+    private TableColumn<User, Button> buttonColumn;
+
     @FXML
-    protected Button searchButton;
+    private Button logoutButton;
 
 
 
     @Override
     public void initialize(java.net.URL location, ResourceBundle resources) {
-        user = Data.logged_user;
+        User user = Data.logged_user;
         headerSet();
         service = new UserService(new AbstractService(URL, USERNAME, PASSWORD), user);
     }
 
-    public static void show() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(UserController.class.getResource("user-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = new Stage();
-        stage.setTitle("User");
-        stage.setScene(scene);
-        stage.show();
+    public static void show(Stage oldStage) {
+        try {
+            oldStage.close();
+            FXMLLoader fxmlLoader = new FXMLLoader(UserController.class.getResource("user-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Feed");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            Window.ALERT(e.getMessage());
+        }
     }
 
     private void headerSet() {
@@ -66,17 +71,37 @@ public class UserController implements Initializable {
     }
 
     @FXML
-    protected void pressSearch() throws Exception {
+    private void pressSearch() throws Exception {
         emailColumn.setCellValueFactory(user -> new SimpleStringProperty
                 (user.getValue().getFirstName() + " " + user.getValue().getLastName()));
-        buttonColumn.setCellFactory(CellButton.<User>forTableColumn("View User", (User u) -> {
+        buttonColumn.setCellFactory(CellButton.forTableColumn("View User", (User u) -> {
             Data.other_user = u;
             FriendController.show();
             return null;
         }));
-        String s = search.getText();
-        UserList u = service.itContains(search.getText());
         ObservableList<User> modelUser = FXCollections.observableArrayList(service.itContains(search.getText()));
         table.setItems(modelUser);
     }
+
+    @FXML
+    private void logout() {
+        Stage stage = (Stage) logoutButton.getScene().getWindow();
+        stage.close();
+    }
+
+    @FXML
+    private void receivedRequests() {
+        ReceivedRequestsController.show();
+    }
+
+    @FXML
+    private void sentRequests() {
+        SentRequestsController.show();
+    }
+
+    @FXML
+    private void friendships() { FriendshipsController.show(); }
+
+    @FXML
+    private void chats() throws Exception { ChatController.show(); }
 }

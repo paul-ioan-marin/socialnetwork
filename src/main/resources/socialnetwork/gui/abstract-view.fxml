@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="socialnetwork.gui.AbstractController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
-    <children>
-    <Button text="Register" onAction="#registerButtonClick"/>
-    <Button text="Login" onAction="#loginButtonClick"/>
-    <Button text="Admin" onAction="#adminButtonClick"/>
-    </children>
-</VBox>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.gui.AbstractController">
+   <children>
+      <Button fx:id="loginButton" layoutX="217.0" layoutY="83.0" onAction="#loginButtonClick" prefHeight="54.0" prefWidth="167.0" text="Login">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="registerButton" layoutX="217.0" layoutY="173.0" onAction="#registerButtonClick" prefHeight="54.0" prefWidth="167.0" text="Register">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="cancelButton" layoutX="217.0" layoutY="262.0" onAction="#cancelButtonClick" prefHeight="54.0" prefWidth="167.0" text="Exit">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

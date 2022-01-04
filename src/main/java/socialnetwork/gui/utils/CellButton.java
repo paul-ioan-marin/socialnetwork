@@ -14,9 +14,7 @@ public class CellButton<S> extends TableCell<S, Button> {
     public CellButton(String label, Function<S,Void> function) {
         this.getStyleClass().add("action-button-table-cell");
         this.button = new Button(label);
-        this.button.setOnAction((ActionEvent e) -> {
-            function.apply(getCurrentItem());
-        } );
+        this.button.setOnAction((ActionEvent e) -> function.apply(getCurrentItem()));
         this.button.setMaxWidth(Double.MAX_VALUE);
     }
 

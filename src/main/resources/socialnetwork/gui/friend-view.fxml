@@ -1,16 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="socialnetwork.gui.FriendController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="socialnetwork.gui.FriendController">
+   <Text layoutX="142.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User">
+      <font>
+         <Font size="20.0"/>
+      </font>
+   </Text>
+   <Text fx:id="name" layoutX="161.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0"
+         text="Text" textAlignment="CENTER" wrappingWidth="159.63671875">
+      <font>
+         <Font size="18.0"/>
+      </font>
+   </Text>
+   <Text fx:id="email" layoutX="80.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0"
+         text="Text" textAlignment="CENTER" wrappingWidth="322.63671875">
+      <font>
+         <Font size="18.0"/>
+      </font>
+   </Text>
+   <Text layoutX="29.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+      <font>
+         <Font size="18.0"/>
+      </font>
+   </Text>
+   <Text layoutX="29.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:">
+      <font>
+         <Font size="18.0"/>
+      </font>
+   </Text>
+   <Button fx:id="addButton" layoutX="417.0" layoutY="51.0" mnemonicParsing="false"
+           prefHeight="42.0" prefWidth="98.0" text="Button1"/>
+   <Button fx:id="deleteButton" layoutX="417.0" layoutY="121.0" mnemonicParsing="false"
+           prefHeight="42.0" prefWidth="98.0" text="Button2"/>
+   <Button fx:id="chatButton" onAction="#chat" layoutX="417.0" layoutY="233.0" mnemonicParsing="false"
+           prefHeight="42.0" prefWidth="98.0" text="Chat"/>
+   <Button fx:id="exitButton" layoutX="417.0" layoutY="303.0" mnemonicParsing="false"
+           onAction="#cancel" prefHeight="42.0" prefWidth="98.0" text="Exit"/>
+</AnchorPane>

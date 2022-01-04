@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="socialnetwork.gui.ReceivedRequestsController">
+   <children>
+      <TableView fx:id="table" layoutX="30.0" layoutY="14.0" prefHeight="301.0" prefWidth="540.0">
+        <columns>
+          <TableColumn fx:id="dateColumn" prefWidth="181.5" text="Request sent at:" />
+          <TableColumn fx:id="emailColumn" prefWidth="247.0" text="Name:" />
+            <TableColumn fx:id="buttonColumn" prefWidth="110.5" />
+        </columns>
+      </TableView>
+      <Button fx:id="cancelButton" layoutX="518.0" layoutY="340.0" mnemonicParsing="false" onAction="#cancel" text="Exit" />
+   </children>
+</AnchorPane>

@@ -1,9 +1,11 @@
 package socialnetwork.service;
 
 import socialnetwork.domain.FriendshipWithStatus;
+import socialnetwork.domain.Message;
 import socialnetwork.domain.ReplyMessage;
 import socialnetwork.domain.User;
 import socialnetwork.domain.containers.FriendshipList;
+import socialnetwork.domain.containers.GroupMessage;
 import socialnetwork.domain.containers.UserList;
 import socialnetwork.domain.exceptions.AccessException;
 import socialnetwork.domain.exceptions.RepositoryException;
@@ -12,7 +14,9 @@ import socialnetwork.repository.database.UserRepositoryDB;
 import socialnetwork.repository.database.friendship.FriendshipStatusRepositoryDB;
 import socialnetwork.repository.database.message.ReplyMessageDB;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -53,6 +57,20 @@ public class AbstractService {
      */
     public Iterable<User> getUsers() throws Exception {
         return users.findAll();
+    }
+
+    /**
+     * @return the messages in the newtork.
+     */
+    public Iterable<ReplyMessage> getMessages() throws Exception {
+        return messages.findAll();
+    }
+
+    /**
+     * @return the groups in the newtork.
+     */
+    public Iterable<GroupMessage> getGroups() throws Exception {
+        return groups.findAll();
     }
 
     /**
@@ -205,9 +223,17 @@ public class AbstractService {
     }
 
     /**
-     * Deletes a friendship with a specific user, given by email;
+     * Deletes a request to a specific user, given by email;
      * @param email the given email.
      */
+    public void deleteRequest(String email) throws Exception {
+        throw new AccessException("inaccessible method");
+    }
+
+        /**
+         * Deletes a friendship with a specific user, given by email;
+         * @param email the given email.
+         */
     public void deleteFriend(String email) throws Exception {
         throw new AccessException("inaccessible method");
     }
@@ -229,6 +255,14 @@ public class AbstractService {
     }
 
     /**
+     * Returns the pendig requests;
+     * @return the pending requests.
+     */
+    public FriendshipList requestsSent() throws Exception {
+        throw new AccessException("inaccessible method");
+    }
+
+    /**
      * Sends a message to one/more users;
      * @param emails_to the users, separated by comma;
      * @param text the text of the message;
@@ -238,11 +272,45 @@ public class AbstractService {
         throw new AccessException("inaccessible method");
     }
 
+    public void replyAll(String text, String reply_uuid) throws Exception {
+        throw new AccessException("inaccessible method");
+    }
+
+    public void reply(String text, String reply_uuid) throws Exception {
+        throw new AccessException("inaccessible method");
+    }
+
     /**
      * Creates the list of messages with a given user;
      * @param email the given user.
      */
     public List<ReplyMessage> messagesWith(String email) throws Exception {
+        throw new AccessException("inaccessible method");
+    }
+
+    /**
+     * Get/Create the group of more users;
+     * @param emails_to the emails;
+     * @return the group.
+     */
+    public GroupMessage toGroup(String emails_to) throws Exception {
+        throw new AccessException("inaccessible method");
+    }
+
+    /**
+     * Returns the messages in a group;
+     * @param groupMessage the given group;
+     * @return the list of messages.
+     */
+    public List<ReplyMessage> messagesInGroup(GroupMessage groupMessage) throws Exception {
+        throw new AccessException("inaccessible method");
+    }
+
+    public void MessageBox(ReplyMessage message) throws Exception {
+        throw new AccessException("inaccessible method");
+    }
+
+    public List<GroupMessage> userGroups() throws Exception {
         throw new AccessException("inaccessible method");
     }
 }

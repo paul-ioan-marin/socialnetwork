@@ -20,7 +20,9 @@ public class LoginController implements Initializable {
     private AbstractService service;
 
     @FXML
-    public TextField emailField;
+    private TextField emailField;
+    @FXML
+    private TextField passwordField;
 
     @FXML
     private Button loginButton;
@@ -31,10 +33,12 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(java.net.URL location, ResourceBundle resources) {
         service = new AbstractService(URL, USERNAME, PASSWORD);
+        passwordField.setDisable(true);
     }
 
-    public static void show() {
+    public static void show(Stage oldStage) {
         try {
+            oldStage.close();
             FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("login-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
@@ -46,7 +50,8 @@ public class LoginController implements Initializable {
         }
     }
 
-    public void login() {
+    @FXML
+    private void login() {
         User user;
         try {
             user = service.findUserByEmail(emailField.getText());
@@ -55,13 +60,14 @@ public class LoginController implements Initializable {
             Stage stage = (Stage) loginButton.getScene().getWindow();
             stage.close();
             Data.logged_user = user;
-            UserController.show();
+            UserController.show((Stage) loginButton.getScene().getWindow());
         } catch (Exception e) {
             Window.ALERT(e.getMessage());
         }
     }
 
-    public void cancel() {
+    @FXML
+    private void cancel() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }

@@ -19,9 +19,12 @@ import static socialnetwork.domain.constants.PersonalConstants.*;
 public class RegisterController implements Initializable {
     private AbstractService service;
 
-    public TextField emailField;
-    public TextField fistNameField;
-    public TextField lastNameField;
+    @FXML
+    private TextField emailField;
+    @FXML
+    private TextField fistNameField;
+    @FXML
+    private TextField lastNameField;
 
     @FXML
     private Button registerButton;
@@ -33,8 +36,9 @@ public class RegisterController implements Initializable {
         service = new AbstractService(URL, USERNAME, PASSWORD);
     }
 
-    public static void show() {
+    public static void show(Stage oldStage) {
         try {
+            oldStage.close();
             FXMLLoader fxmlLoader = new FXMLLoader(RegisterController.class.getResource("register-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
@@ -46,18 +50,20 @@ public class RegisterController implements Initializable {
         }
     }
 
-    public void register() {
+    @FXML
+    private void register() {
         try {
             service.register(emailField.getText(), fistNameField.getText(), lastNameField.getText());
+            Window.CONFIRMATION("User successfully added");
         } catch (Exception e) {
             Window.ALERT(e.getMessage());
         }
         Stage stage = (Stage) registerButton.getScene().getWindow();
         stage.close();
-        Window.CONFIRMATION("User successfully added");
     }
 
-    public void cancel() {
+    @FXML
+    private void cancel() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }

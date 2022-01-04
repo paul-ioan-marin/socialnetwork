@@ -64,4 +64,13 @@ public class FriendshipWithStatus extends Friendship {
     public String toString() {
         return super.toString() + " , " + status.getValue() + " , " + date.format(DATEFORMATTER);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj.getClass() != this.getClass())
+            return false;
+        FriendshipWithStatus aux = new FriendshipWithStatus(((FriendshipWithStatus) obj).getRight(),
+                ((FriendshipWithStatus) obj).getLeft());
+        return super.equals(obj) || super.equals(aux);
+    }
 }

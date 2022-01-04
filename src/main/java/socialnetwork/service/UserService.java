@@ -1,6 +1,7 @@
 package socialnetwork.service;
 
 import socialnetwork.domain.FriendshipWithStatus;
+import socialnetwork.domain.Message;
 import socialnetwork.domain.ReplyMessage;
 import socialnetwork.domain.User;
 import socialnetwork.domain.constants.Constants;
@@ -11,11 +12,9 @@ import socialnetwork.domain.exceptions.RepositoryException;
 import socialnetwork.domain.util.SpecificList;
 import socialnetwork.domain.util.SpecificOperation;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -34,14 +33,15 @@ public class UserService extends AbstractService {
     @Override
     public UserList itContains(String sequence) throws Exception {
         return StreamSupport.stream(this.users.findAll().spliterator(), false)
-                .filter(user -> user.getEmail().toLowerCase(Locale.ROOT).contains(sequence.toLowerCase(Locale.ROOT)))
+                .filter(user -> { String str = user.getEmail() + ";" + user.getFirstName() + " " + user.getLastName();
+                        return str.toLowerCase(Locale.ROOT).contains(sequence.toLowerCase(Locale.ROOT)); })
                 .collect(Collectors.toCollection(UserList::new));
     }
 
     @Override
     public FriendshipWithStatus isFriendWith(User other_user) throws Exception {
         for(FriendshipWithStatus friendship : this.friendships.findAll())
-            if (friendship.isFriend(user) && friendship.isFriend(other_user) && friendship.status().equals(Constants.Status.ACCEPTED))
+            if (friendship.isFriend(user) && friendship.isFriend(other_user))
                 return friendship;
         return null;
     }
@@ -88,9 +88,17 @@ public class UserService extends AbstractService {
 
     @Override
     public void deleteFriend(String email) throws Exception {
-        doOperation(this::acceptedFriendships,this.friendships::decline,
+        doOperation(this::acceptedFriendships, this.friendships::decline,
                 email, new RepositoryException("the friendship does not exist"));
     }
+
+    @Override
+    public void deleteRequest(String email) throws Exception {
+        doOperation(this::requestsSent, this.friendships::decline,
+                email, new RepositoryException("the friend request does not exist"));
+    }
+
+    ////////////////////////// OTHER USERS LISTS FUNCTIONS
 
     @Override
     public FriendshipList acceptedFriendships() throws Exception {
@@ -108,6 +116,16 @@ public class UserService extends AbstractService {
     }
 
     @Override
+    public FriendshipList requestsSent() throws Exception {
+        return StreamSupport.stream(this.friendships.findByFriend(this.user.getId()).spliterator(), false)
+                .filter(friendship -> friendship.getLeft().equals(this.user))
+                .filter(friendship -> friendship.status() == Constants.Status.PENDING)
+                .collect(Collectors.toCollection(FriendshipList::new));
+    }
+
+    ////////////////////////// MESSAGES FUNCTIONS
+
+    @Override
     public void sendMessage(String emails_to, String text, String reply_uuid) throws Exception {
         GroupMessage to_group = new GroupMessage(Stream.concat(groups.parseByEmail(emails_to).stream(),
                 Stream.of(user)).collect(Collectors.toList()));
@@ -119,6 +137,20 @@ public class UserService extends AbstractService {
         ReplyMessage message;
         if (reply_uuid.equals("-")) message = new ReplyMessage(user, to_group, text, LocalDateTime.now());
         else message = new ReplyMessage(messages.findOne(UUID.fromString(reply_uuid)), user, to_group, text, LocalDateTime.now());
+        messages.save(message);
+    }
+
+    public void replyAll(String text, String reply_uuid) throws Exception {
+        Message reply = messages.findOne(UUID.fromString(reply_uuid));
+        GroupMessage to_group = reply.getGroup();
+        ReplyMessage message = new ReplyMessage(reply, user, to_group, text, LocalDateTime.now());
+        messages.save(message);
+    }
+
+    public void reply(String text, String reply_uuid) throws Exception {
+        Message reply = messages.findOne(UUID.fromString(reply_uuid));
+        GroupMessage to_group = new GroupMessage(List.of(reply.getFrom()));
+        ReplyMessage message = new ReplyMessage(reply, user, to_group, text, LocalDateTime.now());
         messages.save(message);
     }
 
@@ -136,5 +168,42 @@ public class UserService extends AbstractService {
                     } catch (Exception ignored) {} return false;})
                 .sorted(Collections.reverseOrder((m1, m2) -> m2.getDate().compareTo(m1.getDate())))
                 .collect(Collectors.toList());
+    }
+
+    ////////////////////////// MESSAGES CHATBOX FUNCTIONS
+
+    @Override
+    public List<GroupMessage> userGroups() throws Exception {
+        return StreamSupport.stream(this.groups.findAll().spliterator(), false)
+                .filter(groupMessage -> groupMessage.getMembers().contains(user)).collect(Collectors.toList());
+    }
+
+    @Override
+    public GroupMessage toGroup(String emails_to) throws Exception {
+        GroupMessage to_group = new GroupMessage(Stream.concat(groups.parseByEmail(emails_to).stream(),
+                Stream.of(user)).collect(Collectors.toList()));
+        for (GroupMessage i : groups.findAll()) {
+            if (to_group.equals(i)) {
+                to_group.setId(i.getId());
+            }
+        }
+        groups.save(to_group);
+        return to_group;
+    }
+
+    @Override
+    public List<ReplyMessage> messagesInGroup(GroupMessage groupMessage) throws Exception {
+        return StreamSupport.stream(this.messages.findAll().spliterator(), false)
+                .filter(message -> {
+                    try {
+                        return message.getGroup().equals(groupMessage);
+                    } catch (Exception ignored) {} return false;})
+                .sorted(Collections.reverseOrder((m1, m2) -> m2.getDate().compareTo(m1.getDate())))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void MessageBox(ReplyMessage message) throws Exception {
+        messages.save(message);
     }
 }

@@ -6,6 +6,7 @@ import socialnetwork.domain.util.SpecificList;
 import socialnetwork.service.UserService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static socialnetwork.domain.constants.Constants.DATEFORMATTER;
@@ -139,15 +140,29 @@ public class UserUI extends AbstractUI {
     }
 
     private void sendMessage() throws Exception {
-        System.out.println("Introduce receivers' emails separated only by comma!");
-        System.out.println("Introduce - if you don't want this message to be a reply");
-        System.out.println("Introduce receivers' emails and the base text id separated by space:");
-        List<String> attributes = List.of((new Scanner(System.in)).nextLine().split(" "));
-        if (attributes.size() != 2)
-            throw new InputException("Wrong inputs");
-        System.out.println("Introduce the message:");
-        String text = new Scanner(System.in).nextLine();
-        service.sendMessage(attributes.get(0), text ,attributes.get(1));
+        System.out.println("Is it a reply? Introduce base text id if it is and enter if it is not:");
+        String reply_id = (new Scanner(System.in)).nextLine();
+        if (reply_id.equals("")) {
+            System.out.println("Introduce receivers' emails separated only by comma!");
+            System.out.println("Introduce receivers' emails:");
+            String emails = (new Scanner(System.in)).nextLine();
+            System.out.println("Introduce the message:");
+            String text = new Scanner(System.in).nextLine();
+            service.sendMessage(emails, text , "-");
+        } else {
+            System.out.println("Is it reply all? y/n");
+            String reply_all = (new Scanner(System.in)).nextLine();
+            if (reply_all.equals("y")) {
+                System.out.println("Introduce the message:");
+                String text = new Scanner(System.in).nextLine();
+                service.replyAll(text, reply_id);
+            }
+            if (reply_all.equals("n")) {
+                System.out.println("Introduce the message:");
+                String text = new Scanner(System.in).nextLine();
+                service.reply(text, reply_id);
+            }
+        }
         System.out.println("Message sent");
     }
 

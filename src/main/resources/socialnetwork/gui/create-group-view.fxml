@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.gui.CreateGroupController">
+   <children>
+      <TableView fx:id="createGroupTable" layoutX="14.0" layoutY="46.0" prefHeight="290.0" prefWidth="573.0">
+        <columns>
+          <TableColumn fx:id="foundFriendsColumn" prefWidth="363.5" text="Friends found:" />
+          <TableColumn fx:id="addColumn" prefWidth="100.0" text="Add" />
+            <TableColumn fx:id="removeColumn" prefWidth="106.0" text="Remove" />
+        </columns>
+      </TableView>
+      <TextField fx:id="searchField" layoutX="29.0" layoutY="14.0" prefHeight="25.0" prefWidth="443.0" promptText="Search friend" />
+      <Button layoutX="501.0" layoutY="14.0" mnemonicParsing="false" onAction="#search" text="Search!" />
+      <Button fx:id="createButton" onAction="#create" layoutX="78.0" layoutY="339.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="141.0" text="Create Group">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="cancelButton" onAction="#cancel" layoutX="371.0" layoutY="339.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="141.0" text="Exit">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
